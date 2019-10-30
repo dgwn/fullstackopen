@@ -1,0 +1,8 @@
+browser to server: GET notes html
+server to browser: notes html
+browser to server: GET main.css
+server to browser main.css
+browser to server: GET main.js
+server to browser: main.js
+browser to server: GET json data
+server to browser: json data
