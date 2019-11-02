@@ -19,6 +19,21 @@ const App = () => {
     setBad(bad + 1);
   }
 
+  const getTotalVotes = () => {
+    return good + neutral + bad;
+  }
+
+  const getAverage = () => {
+    let total = getTotalVotes();
+    return ((good - bad) / total);
+  }
+
+  const getPositive = () => {
+    let total = getTotalVotes();
+    return (good/total) * 100;
+  }
+
+
   return (
     <div>
       <h1>Give Feedback!</h1>
@@ -26,9 +41,17 @@ const App = () => {
       <Button rating="neutral" handler={handleNeutralClick}/>
       <Button rating="bad" handler={handleBadClick}/>
       <h2>Statistics</h2>
-      <Stat rating="good" votes={good}/>
-      <Stat rating="neutral" votes={neutral}/>
-      <Stat rating="bad" votes={bad}/>
+      <Stat rating="good votes:" votes={good}/>
+      <Stat rating="neutral votes:" votes={neutral}/>
+      <Stat rating="bad votes:" votes={bad}/>
+      <Stat rating="all votes:" votes={ getTotalVotes() }/>
+
+      {getTotalVotes() > 0 &&
+      <Stat rating="average:" votes={ getAverage() } />
+      }
+      {getTotalVotes() > 0 &&
+      <Stat rating="positive:" votes={ getPositive() + "%"} />
+      }
 
     </div>
   )
@@ -36,7 +59,7 @@ const App = () => {
 
 const Stat = (props) => {
   return (
-    <p>{props.rating} votes: {props.votes}</p>
+    <p>{props.rating} {props.votes}</p>
   )
 }
 
