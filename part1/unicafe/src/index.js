@@ -40,26 +40,38 @@ const App = () => {
       <Button rating="good" handler={handleGoodClick}/>
       <Button rating="neutral" handler={handleNeutralClick}/>
       <Button rating="bad" handler={handleBadClick}/>
-      <h2>Statistics</h2>
-      <Stat rating="good votes:" votes={good}/>
-      <Stat rating="neutral votes:" votes={neutral}/>
-      <Stat rating="bad votes:" votes={bad}/>
-      <Stat rating="all votes:" votes={ getTotalVotes() }/>
+      {getTotalVotes() > 0 && <Statistics good={good}
+                  neutral={neutral}
+                  bad={bad}
+                  getTotalVotes={getTotalVotes()}
+                  getAverage={getAverage()}
+                  getPositive={getPositive()}
+                  />
+      }
 
-      {getTotalVotes() > 0 &&
-      <Stat rating="average:" votes={ getAverage() } />
-      }
-      {getTotalVotes() > 0 &&
-      <Stat rating="positive:" votes={ getPositive() + "%"} />
-      }
 
     </div>
   )
 }
 
-const Stat = (props) => {
+const Statistic = (props) => {
   return (
     <p>{props.rating} {props.votes}</p>
+  )
+}
+
+const Statistics = (props) => {
+  return (
+    <div>
+      <h2>Statistics</h2>
+      <Statistic rating="good votes:" votes={props.good}/>
+      <Statistic rating="neutral votes:" votes={props.neutral}/>
+      <Statistic rating="bad votes:" votes={props.bad}/>
+      <Statistic rating="all votes:" votes={ props.getTotalVotes }/>
+      <Statistic rating="average:" votes={ props.getAverage } />
+      <Statistic rating="positive:" votes={ props.getPositive + "%"} />
+    </div>
+
   )
 }
 
