@@ -56,7 +56,10 @@ const App = () => {
 
 const Statistic = (props) => {
   return (
-    <p>{props.rating} {props.votes}</p>
+    <tr>
+      <td>{props.rating}</td>
+      <td>{props.data}</td>
+    </tr>
   )
 }
 
@@ -64,12 +67,16 @@ const Statistics = (props) => {
   return (
     <div>
       <h2>Statistics</h2>
-      <Statistic rating="good votes:" votes={props.good}/>
-      <Statistic rating="neutral votes:" votes={props.neutral}/>
-      <Statistic rating="bad votes:" votes={props.bad}/>
-      <Statistic rating="all votes:" votes={ props.getTotalVotes }/>
-      <Statistic rating="average:" votes={ props.getAverage } />
-      <Statistic rating="positive:" votes={ props.getPositive + "%"} />
+      <table>
+        <tbody>
+          <Statistic rating="good votes:" data={props.good}/>
+          <Statistic rating="neutral votes:" data={props.neutral}/>
+          <Statistic rating="bad votes:" data={props.bad}/>
+          <Statistic rating="all votes:" data={ props.getTotalVotes }/>
+          <Statistic rating="average:" data={ props.getAverage } />
+          <Statistic rating="positive:" data={ props.getPositive + "%"} />
+        </tbody>
+      </table>
     </div>
 
   )
