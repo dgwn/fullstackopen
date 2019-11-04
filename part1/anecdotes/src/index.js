@@ -3,25 +3,39 @@ import ReactDOM from 'react-dom'
 
 const App = (props) => {
   const [selected, setSelected] = useState(0);
+  const [mostPopular, setMostPopular] = useState("");
+  const [mostPoints, setMostPoints] = useState(0);
   const [points, setPoints] = useState([0, 0, 0, 0, 0, 0]);
 
-  const randomize = () => {
-    setSelected(Math.floor(Math.random() * anecdotes.length));
+  const randomize = () => () => {
+    let current = Math.floor(Math.random() * Math.floor(anecdotes.length))
+    setSelected(current);
   }
 
   const handleVote = () => {
-    let copy = [...points];
-    copy[selected]+=1
-    console.log(copy[selected]);
-    setPoints(copy);
+
+    const copy = [...points];
+    copy[selected]+= 1
+
+    if (copy[selected] > mostPoints) {
+      setMostPopular(anecdotes[selected])
+      setMostPoints(copy[selected])
+    }
+
+    setPoints(copy)
   }
+
+
+
+
 
   return (
     <div>
       {props.anecdotes[selected]}
       <br/>
       <button onClick={handleVote}>vote</button>
-      <button onClick={randomize}>next anecdote</button>
+      <button onClick={randomize()}>next anecdote</button>
+      {mostPoints > 0 && <p>"{mostPopular}" has {mostPoints} point(s).</p> }
 
 
 
