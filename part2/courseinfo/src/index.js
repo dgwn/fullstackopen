@@ -50,6 +50,7 @@ const Content = ({ parts }) => {
   return (
     <div>
       {generateContent()}
+      <Total parts={parts}/>
     </div>
   )
 }
