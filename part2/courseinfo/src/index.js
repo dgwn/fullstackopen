@@ -45,7 +45,7 @@ const Course = ({ course }) => {
 
 const Content = ({ parts }) => {
 
-  const generateContent = () => parts.map( part => <Part part={part.name} exercises={part.exercises}/>)
+  const generateContent = () => parts.map( part => <Part part={part.name} exercises={part.exercises} key={part.id}/>)
 
   return (
     <div>
@@ -70,8 +70,11 @@ const Header = (props) => {
 }
 
 const Total = (props) => {
+
+
+
   return (
-    <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
+    <p>Number of exercises: {props.parts.reduce((a, b) => a + b.exercises, 0)} </p>
   )
 }
 
