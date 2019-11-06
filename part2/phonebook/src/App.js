@@ -14,8 +14,12 @@ const App = () => {
       name: newName,
       id: (persons.length)
     }
-    setPersons(persons.concat(nameObject))
-    setNewName('')
+    if (checkNames() === true) {
+      setPersons(persons.concat(nameObject))
+      setNewName('')
+    }
+    else {window.alert(`"${nameObject.name}" is already in the phonebook`)}
+
   }
 
   const handleNameChange = (event) => {
@@ -23,6 +27,15 @@ const App = () => {
   }
 
   const displayNames = () => persons.map( person => <li id={person.id}>{person.name}</li>)
+
+  const checkNames = () => {
+    for (let i =0; i < persons.length; i++) {
+      if (newName === persons[i].name) {
+        return false
+      }
+    }
+    return true
+  }
 
   return (
     <div>
