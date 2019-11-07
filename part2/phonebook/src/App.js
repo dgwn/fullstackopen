@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Form from './components/Form'
+import Persons from './components/Persons'
+import Search from './components/Search'
 
 const App = () => {
   const [ persons, setPersons] = useState([
@@ -27,18 +30,6 @@ const App = () => {
       setNewNumber('')
     }
     else {window.alert(`"${nameObject.name}" is already in the phonebook`)}
-
-  }
-
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  }
-
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value)
-  }
-  const handleSearch = (event) => {
-    setNewSearch(event.target.value)
   }
 
   const displayNames = () => {
@@ -53,7 +44,7 @@ const App = () => {
                   .map( person => <li key={person.id}>{person.name}: {person.number}</li> )
       }
     }
-    return <li>No such name in the phoneboook!</li>
+    return <li>No such name in the phonebook</li>
   }
 
   const checkNames = () => {
@@ -65,31 +56,23 @@ const App = () => {
     return true
   }
 
-
-
   return (
     <div>
       <h1>Phonebook</h1>
-      <form>
-        <div>
-          Search: <input value={newSearch} onChange={handleSearch}/>
-        </div>
-      </form>
+      <Search
+        newSearch={newSearch}
+        setNewSearch={setNewSearch}
+      />
       <h2>Add an entry</h2>
-      <form>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange}/>
-        <div/>
-          <button type="submit" onClick={addName}>add</button>
-        </div>
-      </form>
+      <Form
+        newName={newName}
+        setNewName={setNewName}
+        addName={addName}
+        newNumber={newNumber}
+        setNewNumber={setNewNumber}
+      />
       <h2>Numbers</h2>
-        <ul>
-          {displayNames()}
-        </ul>
+      <Persons displayNames={displayNames}/>
     </div>
   )
 }
