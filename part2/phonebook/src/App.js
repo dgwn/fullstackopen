@@ -5,10 +5,14 @@ const App = () => {
     { name: 'Arto Hellas',
       id: 0,
       number: '555-5555'
-    }
+    },
+    { name: 'Dan Abramov',
+      id: 1,
+      number: '123-4567'}
   ])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ newSearch, setNewSearch ] = useState('')
 
   const addName = (event) => {
     event.preventDefault()
@@ -33,8 +37,24 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
+  const handleSearch = (event) => {
+    setNewSearch(event.target.value)
+  }
 
-  const displayNames = () => persons.map( person => <li id={person.id}>{person.name}: {person.number}</li>)
+  const displayNames = () => {
+    if (newSearch === "") {
+       return persons.map( person => <li key={person.id}>{person.name}: {person.number}</li>)
+    }
+    for (let i =0; i < persons.length; i++) {
+      const included = persons[i].name.toLowerCase().includes(newSearch)
+      if (persons[i].name.toLowerCase().includes(newSearch) === true && included ) {
+        return persons
+                  .filter( (person) => person.name.toLowerCase().includes(newSearch) )
+                  .map( person => <li key={person.id}>{person.name}: {person.number}</li> )
+      }
+    }
+    return <li>No such name in the phoneboook!</li>
+  }
 
   const checkNames = () => {
     for (let i =0; i < persons.length; i++) {
@@ -45,9 +65,17 @@ const App = () => {
     return true
   }
 
+
+
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <form>
+        <div>
+          Search: <input value={newSearch} onChange={handleSearch}/>
+        </div>
+      </form>
+      <h2>Add an entry</h2>
       <form>
         <div>
           name: <input value={newName} onChange={handleNameChange}/>
@@ -57,7 +85,6 @@ const App = () => {
         <div/>
           <button type="submit" onClick={addName}>add</button>
         </div>
-        {/* <div>debug: {}</div> */}
       </form>
       <h2>Numbers</h2>
         <ul>
