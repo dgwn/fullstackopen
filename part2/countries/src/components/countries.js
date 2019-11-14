@@ -17,7 +17,7 @@ const Countries = ( {filteredList} ) => {
           <p>population: {country.population}</p>
           <h3>languages: </h3>
           <ul>
-            {country.languages.map( language => <li key={language}>{language.name}</li>)}
+            {country.languages.map( language => <li key={language.iso639_1}>{language.name}</li>)}
           </ul>
           <img src={country.flag} alt={country.name + " flag"} style={{maxWidth: '100px'}}/>
         </div>
