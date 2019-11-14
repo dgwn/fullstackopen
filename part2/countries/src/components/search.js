@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Search = ( {newSearch, setNewSearch, runFilter, handleSearch} ) => {
+const Search = ( {newSearch, handleSearch} ) => {
 
 
 

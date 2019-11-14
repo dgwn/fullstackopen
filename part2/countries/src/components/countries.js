@@ -1,13 +1,13 @@
 import React from 'react';
 
-const Countries = ( {filteredList} ) => {
+const Countries = ( {filteredList, handleClick} ) => {
 
   const handleLength = () => {
     if (filteredList.length > 10) {
       return <p>Too many matches, please narrow your query!</p>
     }
     else  if (filteredList.length <=10 && filteredList.length !== 1){
-      return filteredList.map( country => <p key={country.numericCode}>{country.name}</p>)
+      return filteredList.map( country => <div key={country.numericCode}>{country.name}<button onClick={handleClick} id={country.name}>show</button></div>)
     }
     else
       return filteredList.map( country =>
@@ -23,7 +23,6 @@ const Countries = ( {filteredList} ) => {
         </div>
       )
   }
-
 
   return(
     <div className="countries">

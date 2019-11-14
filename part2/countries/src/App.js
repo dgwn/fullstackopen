@@ -22,6 +22,11 @@ function App() {
     runFilter()
   }
 
+  const handleClick = (event) => {
+    setNewSearch(event.target.id.toLowerCase())
+  }
+
+
   useEffect(() => {
     runFilter()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,6 +59,7 @@ function App() {
       <Countries
         filteredList={filteredList}
         runFilter={runFilter}
+        handleClick={handleClick}
         />
 
     </div>
