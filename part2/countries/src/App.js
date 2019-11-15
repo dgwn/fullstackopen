@@ -56,6 +56,7 @@ function App() {
         runFilter={runFilter}
         filteredList={filteredList}
         />
+      <br/>
       <Countries
         filteredList={filteredList}
         runFilter={runFilter}
