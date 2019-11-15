@@ -7,7 +7,8 @@ const Weather = ( {capital} ) => {
   const [ updated, setUpdated ] = useState(false)
 
   useEffect( () => {
-    const url = 'http://api.weatherstack.com/current?access_key=d17c778da5310be1f2ac6011aff139ad&query='
+    const key = ''
+    const url = 'http://api.weatherstack.com/current?access_key='+key+'&query='
     axios
       .get(url+capital)
       .then(response => {
