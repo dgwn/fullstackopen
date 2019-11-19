@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import nameService from './services/names'
 import Form from './components/Form'
 import Persons from './components/Persons'
 import Search from './components/Search'
@@ -20,12 +20,10 @@ const App = () => {
   const [ newSearch, setNewSearch ] = useState('')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    nameService
+      .getAll()
+      .then(initialNames => {
+        setPersons(initialNames)
       })
   }, [])
 
@@ -36,10 +34,10 @@ const App = () => {
       number: newNumber
     }
     if (checkNames() === true) {
-      axios
-        .post('http://localhost:3001/persons', nameObject)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+      nameService
+        .create(nameObject)
+        .then(returnedName => {
+          setPersons(persons.concat(returnedName))
           setNewName('')
           setNewNumber('')
         })
