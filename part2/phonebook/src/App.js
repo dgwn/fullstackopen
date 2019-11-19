@@ -45,9 +45,18 @@ const App = () => {
     else {window.alert(`"${nameObject.name}" is already in the phonebook`)}
   }
 
+  const deleteName = id => {
+    const deleteObject = persons.find(n => n.id === id).id
+    nameService
+      .remove(deleteObject)
+      .then(deleteObject => {
+        setPersons(persons.filter(n => n.id !== id))
+      })
+  }
+
   const displayNames = () => {
     if (newSearch === "") {
-       return persons.map( person => <li key={person.id}>{person.name}: {person.number}</li>)
+       return persons.map( person => <li key={person.id}>{person.name}: {person.number} <button onClick={ () => deleteName(person.id)}>Delete</button></li>)
     }
     for (let i =0; i < persons.length; i++) {
       const included = persons[i].name.toLowerCase().includes(newSearch)
