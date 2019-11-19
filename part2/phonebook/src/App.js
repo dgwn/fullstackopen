@@ -33,13 +33,16 @@ const App = () => {
     event.preventDefault()
     const nameObject = {
       name: newName,
-      id: (persons.length),
       number: newNumber
     }
     if (checkNames() === true) {
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
+      axios
+        .post('http://localhost:3001/persons', nameObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        })
     }
     else {window.alert(`"${nameObject.name}" is already in the phonebook`)}
   }
