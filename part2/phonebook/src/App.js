@@ -42,7 +42,25 @@ const App = () => {
           setNewNumber('')
         })
     }
-    else {window.alert(`"${nameObject.name}" is already in the phonebook`)}
+    else {
+      const result = window.confirm(`"${nameObject.name}" is already in the phonebook. Replace the old number with a new one?`)
+      if (result) {
+        const newNameObject = {
+          name: nameObject.name,
+          number: newNumber,
+          id: persons.length
+        }
+        nameService
+          .update(newNameObject)
+          .then(returnedName => {
+            setPersons(persons.map(person => person.id !== newNameObject.id ? person: returnedName))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
+
+
+    }
   }
 
   const deleteName = id => {
