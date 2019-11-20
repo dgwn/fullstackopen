@@ -3,6 +3,7 @@ import nameService from './services/names'
 import Form from './components/Form'
 import Persons from './components/Persons'
 import Search from './components/Search'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
+  const [ errorMessage, setErrorMessage ] = useState(null)
 
   useEffect(() => {
     nameService
@@ -38,8 +40,12 @@ const App = () => {
         .create(nameObject)
         .then(returnedName => {
           setPersons(persons.concat(returnedName))
+          setErrorMessage(`${newName} was added to the phonebook.`)
           setNewName('')
           setNewNumber('')
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 2000)
         })
     }
     else {
@@ -54,8 +60,12 @@ const App = () => {
           .update(newNameObject)
           .then(returnedName => {
             setPersons(persons.map(person => person.id !== newNameObject.id ? person: returnedName))
+            setErrorMessage(`${newName} was updated.`)
             setNewName('')
             setNewNumber('')
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 2000)
           })
       }
 
@@ -104,6 +114,7 @@ const App = () => {
         setNewSearch={setNewSearch}
       />
       <h2>Add an entry</h2>
+      <Notification message={errorMessage} />
       <Form
         newName={newName}
         setNewName={setNewName}
