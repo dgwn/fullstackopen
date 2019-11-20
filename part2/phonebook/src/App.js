@@ -20,6 +20,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
   const [ errorMessage, setErrorMessage ] = useState(null)
+  const [ messageType, setMessageType ] = useState(null)
 
   useEffect(() => {
     nameService
@@ -40,11 +41,13 @@ const App = () => {
         .create(nameObject)
         .then(returnedName => {
           setPersons(persons.concat(returnedName))
+          setMessageType('success')
           setErrorMessage(`${newName} was added to the phonebook.`)
           setNewName('')
           setNewNumber('')
           setTimeout(() => {
             setErrorMessage(null)
+            setMessageType(null)
           }, 2000)
         })
     }
@@ -60,9 +63,17 @@ const App = () => {
           .update(newNameObject)
           .then(returnedName => {
             setPersons(persons.map(person => person.id !== newNameObject.id ? person: returnedName))
+            setMessageType('error')
             setErrorMessage(`${newName} was updated.`)
             setNewName('')
             setNewNumber('')
+            setTimeout(() => {
+              setErrorMessage(null)
+              setMessageType(null)
+            }, 2000)
+          })
+          .catch(error => {
+            setErrorMessage(`${newName} was already removed from server.`)
             setTimeout(() => {
               setErrorMessage(null)
             }, 2000)
@@ -114,7 +125,7 @@ const App = () => {
         setNewSearch={setNewSearch}
       />
       <h2>Add an entry</h2>
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} messageType={messageType} />
       <Form
         newName={newName}
         setNewName={setNewName}
