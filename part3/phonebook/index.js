@@ -69,9 +69,7 @@ app.post('/api/persons', (req, res) => {
     }
 
     const names = persons.map( person => person.name)
-    console.log(names)
     if (names.includes(body.name)) {
-      console.log('name already exists')
       return res.status(409).json({
         error: 'name already exists'
       })
