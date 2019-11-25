@@ -1,8 +1,12 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+var morgan = require('morgan')
+
+
 
 app.use(bodyParser.json())
+app.use(morgan('tiny'))
 
 let persons = [
     {
@@ -26,6 +30,10 @@ let persons = [
       "id": 4
     }
   ]
+const generateId = () => {
+  const id = Math.floor(Math.random() * 1000)
+  return id
+}
 
 app.get('/info', (req, res) => {
   let date = new Date()
@@ -53,11 +61,6 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end
 })
 
-const generateId = () => {
-  const id = Math.floor(Math.random() * 1000)
-  return id
-}
-
 app.post('/api/persons', (req, res) => {
   const body = req.body
   console.log(body)
@@ -84,6 +87,12 @@ app.post('/api/persons', (req, res) => {
     persons = persons.concat(person)
   res.json(persons)
 })
+
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 const port = 3001
 app.listen(port)
