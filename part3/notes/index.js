@@ -1,8 +1,11 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
+app.use(cors())
 app.use(bodyParser.json())
+app.use(express.static('build'))
 
 let notes = [
   {
@@ -54,7 +57,7 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/notes', (req, res) => {
+app.get('/api/notes', (req, res) => {
   res.json(notes)
 })
 
@@ -74,6 +77,6 @@ app.delete('/notes/:id', (req, res) => {
   res.status(204).end
 })
 
-const port = 3001
-app.listen(port)
-console.log(`Server running on port ${port}`)
+const PORT = process.env.PORT || 3001
+app.listen(PORT)
+console.log(`Server running on port ${PORT}`)

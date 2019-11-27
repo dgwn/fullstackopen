@@ -8,14 +8,7 @@ import Notification from './components/Notification'
 
 const App = () => {
   const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas',
-      id: 0,
-      number: '555-5555'
-    },
-    { name: 'Dan Abramov',
-      id: 1,
-      number: '123-4567'}
-  ])
+])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
@@ -28,7 +21,7 @@ const App = () => {
       .then(initialNames => {
         setPersons(initialNames)
       })
-  }, [])
+  }, [persons])
 
   const addName = (event) => {
     event.preventDefault()
@@ -45,6 +38,7 @@ const App = () => {
           setErrorMessage(`${newName} was added to the phonebook.`)
           setNewName('')
           setNewNumber('')
+          console.log(persons)
           setTimeout(() => {
             setErrorMessage(null)
             setMessageType(null)
@@ -90,6 +84,12 @@ const App = () => {
       .remove(deleteObject)
       .then(deleteObject => {
         setPersons(persons.filter(n => n.id !== id))
+        setErrorMessage(`A name was deleted.`)
+        setMessageType('success')
+        setTimeout(() => {
+          setErrorMessage(null)
+          setMessageType(null)
+        }, 2000)
       })
   }
 
