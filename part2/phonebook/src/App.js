@@ -21,7 +21,7 @@ const App = () => {
       .then(initialNames => {
         setPersons(initialNames)
       })
-  }, [persons])
+  }, [])
 
   const addName = (event) => {
     event.preventDefault()

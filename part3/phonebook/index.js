@@ -1,8 +1,11 @@
+require('dotenv').config ()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 var morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
 
 
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
@@ -12,6 +15,10 @@ app.use(bodyParser.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 app.use(express.static('build'))
 
+
+
+
+//initial names?
 let persons = [
     {
       "name": "Arto Hellas",
@@ -34,11 +41,13 @@ let persons = [
       "id": 4
     }
   ]
+//function for generating a unique id
 const generateId = () => {
   const id = Math.floor(Math.random() * 1000)
   return id
 }
 
+//routes
 app.get('/info', (req, res) => {
   let date = new Date()
   res.send(`<p>Phonebook has info for ${persons.length} people</p>
@@ -46,17 +55,16 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.find ({}).then(persons => {
+    res.json(persons.map(person => person.toJSON()))
+
+  })
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find( person => person.id === id)
-  if (person) {
-    res.json(person)
-  } else {
-    res.status(404).end()
-  }
+  Person.findById (req.params.id).then(person => {
+    res.json(person.toJSON())
+  })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -75,6 +83,7 @@ app.post('/api/persons', (req, res) => {
       })
     }
 
+
     const names = persons.map( person => person.name)
     if (names.includes(body.name)) {
       return res.status(409).json({
@@ -82,14 +91,19 @@ app.post('/api/persons', (req, res) => {
       })
     }
 
-    const person = {
+    const person = new Person({
       name: body.name,
-      number: body.number,
-      id: generateId()
-    }
+      number: body.number
+    })
+
+    person.save()
+      .then(savedPerson => {
+        res.json(savedPerson.toJSON())
+      })
+      .catch(err => console.log(err))
 
     persons = persons.concat(person)
-  res.json(persons)
+
 })
 
 const unknownEndpoint = (req, res) => {
@@ -98,6 +112,7 @@ const unknownEndpoint = (req, res) => {
 
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}...`)
+const PORT = process.env.PORT
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}...`)
+})

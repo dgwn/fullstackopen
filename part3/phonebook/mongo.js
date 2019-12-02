@@ -14,8 +14,7 @@ mongoose.connect(url, {useNewUrlParser: true})
 
 const personSchema = new mongoose.Schema({
   name: String,
-  number: String,
-  _id: mongoose.Schema.Types.ObjectId
+  number: String
 })
 
 const Person = mongoose.model('Person', personSchema)
@@ -31,8 +30,7 @@ if (process.argv.length == 3) {
 
 const person = new Person({
   name: process.argv[3],
-  number: process.argv[4],
-  _id: new mongoose.Types.ObjectId()
+  number: process.argv[4]
 })
 
 person.save().then(res => {
