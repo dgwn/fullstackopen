@@ -7,8 +7,7 @@ import Notification from './components/Notification'
 
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-])
+  const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
@@ -38,7 +37,6 @@ const App = () => {
           setErrorMessage(`${newName} was added to the phonebook.`)
           setNewName('')
           setNewNumber('')
-          console.log(persons)
           setTimeout(() => {
             setErrorMessage(null)
             setMessageType(null)
@@ -48,16 +46,19 @@ const App = () => {
     else {
       const result = window.confirm(`"${nameObject.name}" is already in the phonebook. Replace the old number with a new one?`)
       if (result) {
+        // find the person object with a name that matches the inputted one
+        const selectedPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+        // create a new object using the new number but old ID
         const newNameObject = {
           name: nameObject.name,
           number: newNumber,
-          id: persons.length
+          id: selectedPerson.id
         }
         nameService
           .update(newNameObject)
           .then(returnedName => {
             setPersons(persons.map(person => person.id !== newNameObject.id ? person: returnedName))
-            setMessageType('error')
+            setMessageType('success')
             setErrorMessage(`${newName} was updated.`)
             setNewName('')
             setNewNumber('')
@@ -73,9 +74,16 @@ const App = () => {
             }, 2000)
           })
       }
-
-
     }
+  }
+
+  const checkNames = () => {
+    for (let i =0; i < persons.length; i++) {
+      if (newName.toLowerCase() === persons[i].name.toLowerCase()) {
+        return false
+      }
+    }
+    return true
   }
 
   const deleteName = id => {
@@ -108,14 +116,7 @@ const App = () => {
     return <li>No such name in the phonebook</li>
   }
 
-  const checkNames = () => {
-    for (let i =0; i < persons.length; i++) {
-      if (newName.toLowerCase() === persons[i].name.toLowerCase()) {
-        return false
-      }
-    }
-    return true
-  }
+
 
   return (
     <div>
@@ -127,6 +128,7 @@ const App = () => {
       <h2>Add an entry</h2>
       <Notification message={errorMessage} messageType={messageType} />
       <Form
+        checkNames={checkNames}
         newName={newName}
         setNewName={setNewName}
         addName={addName}
