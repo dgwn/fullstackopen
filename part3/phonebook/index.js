@@ -118,7 +118,7 @@ const unknownEndpoint = (req, res) => {
 }
 app.use(unknownEndpoint)
 
-//checks if request returns an error
+// create middleware that checks if request returns an error
 const errorHandler = (error, req, res, next) => {
   console.log(error.message)
 
