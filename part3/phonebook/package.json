@@ -8,7 +8,8 @@
     "watch": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "git push heroku master",
-    "logs:prod": "heroku logs --tail"
+    "logs:prod": "heroku logs --tail",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/dgwn/fullstackopen#readme",
   "devDependencies": {
+    "eslint": "^6.7.2",
     "nodemon": "^2.0.1"
   },
   "dependencies": {
