@@ -3,6 +3,9 @@ const uniqueValidator = require('mongoose-unique-validator')
 // You will need to add the password in the .env file! It has been removed for securtiy purposes
 const url = process.env.MONGODB_URI
 
+// fix deprecation warning for findAndModify
+mongoose.set('useFindAndModify', false)
+
 mongoose.connect(url, {useNewUrlParser: true})
   .then(result => {
     console.log('connected to MongoDB')
@@ -11,15 +14,20 @@ mongoose.connect(url, {useNewUrlParser: true})
     console.log('error connecting to MongoDB:', error.message)
   })
 
-// validation: only add one number for a person, name must be at least 3char and number must be at least 8 digits
+// validation: person names must be unique, name must be at least 3char and number must be at least 8 digits
 
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    minlength: 3,
     unique: true
   },
-  number: String,
+  number: {
+    type: String,
+    required: true,
+    minlength: 8
+  },
   id: String
 })
 
