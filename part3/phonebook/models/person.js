@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const uniqueValidator = require('mongoose-unique-validator')
 // You will need to add the password in the .env file! It has been removed for securtiy purposes
 const url = process.env.MONGODB_URI
 
@@ -11,8 +11,14 @@ mongoose.connect(url, {useNewUrlParser: true})
     console.log('error connecting to MongoDB:', error.message)
   })
 
+// validation: only add one number for a person, name must be at least 3char and number must be at least 8 digits
+
 const personSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+    unique: true
+  },
   number: String,
   id: String
 })

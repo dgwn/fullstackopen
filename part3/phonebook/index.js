@@ -80,7 +80,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
   console.log(body)
 
@@ -91,12 +91,7 @@ app.post('/api/persons', (req, res) => {
     }
 
 
-    const names = persons.map( person => person.name)
-    if (names.includes(body.name)) {
-      return res.status(409).json({
-        error: 'name already exists'
-      })
-    }
+
 
     const person = new Person({
       name: body.name,
@@ -107,7 +102,7 @@ app.post('/api/persons', (req, res) => {
       .then(savedPerson => {
         res.json(savedPerson.toJSON())
       })
-      .catch(err => console.log(err))
+      .catch(err => next(err))
 
     persons = persons.concat(person)
 
@@ -125,6 +120,9 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return res.status(400).send({error: 'malformatted id'})
+  }
+  else if (error.name === 'MongoError' && error.code === 11000) {
+    return res.status(409).json({error: error.message})
   }
   next(error)
 }
