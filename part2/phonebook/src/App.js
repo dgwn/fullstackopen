@@ -42,7 +42,15 @@ const App = () => {
             setMessageType(null)
           }, 2000)
         })
-    }
+        .catch(error => {
+          setMessageType('error')
+          setErrorMessage(error.message)
+          setTimeout(() => {
+            setErrorMessage(null)
+            setMessageType(null)
+          }, 2000)
+        })
+      }
     else {
       const result = window.confirm(`"${nameObject.name}" is already in the phonebook. Replace the old number with a new one?`)
       if (result) {
