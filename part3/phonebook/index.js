@@ -18,26 +18,7 @@ app.use(express.static('build'))
 
 //initial names?
 let persons = [
-    {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    }
+
   ]
 //function for generating a unique id
 const generateId = () => {
@@ -45,17 +26,20 @@ const generateId = () => {
   return id
 }
 
-//routes
-app.get('/info', (req, res) => {
-  let date = new Date()
-  res.send(`<p>Phonebook has info for ${persons.length} people</p>
-            <p>${date}`)
-})
+//      Routes
 
 app.get('/api/persons', (req, res) => {
   Person.find ({}).then(persons => {
     res.json(persons.map(person => person.toJSON()))
 
+  })
+})
+
+app.get('/info', (req, res) => {
+  let date = new Date()
+  Person.find({}).then(persons => {
+    res.send(`<p>Phonebook has info for ${persons.length} people</p>
+              <p>${date}`)
   })
 })
 
