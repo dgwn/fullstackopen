@@ -22,15 +22,15 @@
   },
   "homepage": "https://github.com/dgwn/fullstackopen#readme",
   "devDependencies": {
-    "eslint": "^6.7.2",
-    "nodemon": "^2.0.1"
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.3"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.7.13",
+    "mongoose": "^5.9.9",
     "mongoose-unique-validator": "^2.0.3",
-    "morgan": "^1.9.1"
+    "morgan": "^1.10.0"
   }
 }
