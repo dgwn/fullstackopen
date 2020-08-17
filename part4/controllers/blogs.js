@@ -28,4 +28,13 @@ blogsRouter.post("/", (request, response, next) => {
     });
 });
 
+blogsRouter.delete("/:id", (request, response) => {
+  Blog.findByIdAndDelete(request.params.id).then((blog) => {
+    response.status(204).json({
+      status: "success",
+      data: null,
+    });
+  });
+});
+
 module.exports = blogsRouter;
