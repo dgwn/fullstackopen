@@ -10,7 +10,12 @@ blogsRouter.get("/", (request, response) => {
 
 blogsRouter.get("/:id", (request, response) => {
   Blog.findById(request.params.id).then((blog) => {
-    response.json(blog);
+    if (blog) {
+      response.json(blog);
+    }
+    response.status(404).json({
+      status: "fail",
+    });
   });
 });
 
