@@ -82,3 +82,21 @@ describe("total likes", () => {
     expect(listHelper.totalLikes(listWithManyBlogs)).toBe(36);
   });
 });
+
+describe("favorite blog", () => {
+  test("when list has one blog, it has the most likes", () => {
+    expect(listHelper.favoriteBlog(listWithOneBlog)).toEqual({
+      title: "Go To Statement Considered Harmful",
+      author: "Edsger W. Dijkstra",
+      likes: 5
+    });
+  });
+
+  test("when list has many blogs, find the one with the most likes", () => {
+    expect(listHelper.favoriteBlog(listWithManyBlogs)).toEqual({
+      title: "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      likes: 12
+    });
+  });
+});
