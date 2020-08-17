@@ -4,6 +4,12 @@ const dummy = () => {
 };
 
 // 4.4 totalLikes function
+const totalLikes = (blogs) => {
+  const reducer = (sum, item) => {
+    return sum + item.likes;
+  };
+  return blogs.reduce(reducer, 0);
+};
 
 // 4.5 favoriteBlog function
 
@@ -12,5 +18,6 @@ const dummy = () => {
 // 4.7 mostLikes function
 
 module.exports = {
-  dummy
+  dummy,
+  totalLikes
 };
