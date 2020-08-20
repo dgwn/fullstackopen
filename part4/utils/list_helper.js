@@ -22,11 +22,31 @@ const favoriteBlog = (blogs) => {
   return _.pick(topBlog, ["title", "author", "likes"]);
 };
 // 4.6 mostBlogs function
+const mostBlogs = (blogs) => {
+  // finds out how many blogs were written by each author
+  const mostObject = _.countBy(blogs, "author");
+  console.log(mostObject);
+
+  // use a function to find the auhtor with the most blogs out of this object
+  const topAuthor = _.max(
+    Object.keys(mostObject),
+    (author) => mostObject[author]
+  );
+  console.log(topAuthor);
+
+  // count how many blogs have that author
+  const numberWritten = mostObject[topAuthor];
+  // create an object which lists author and number of blogs: { author: "Robert C. Martin", blogs: 3 }
+  const finalObj = { author: topAuthor, blogs: numberWritten };
+  console.log(finalObj);
+  return finalObj;
+};
 
 // 4.7 mostLikes function
 
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 };
