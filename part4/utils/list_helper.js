@@ -41,10 +41,26 @@ const mostBlogs = (blogs) => {
 };
 
 // 4.7 mostLikes function
+const mostLikes = (blogs) => {
+  // sort blogs into arrays for each author
+  const groups = _.groupBy(blogs, (blog) => blog.author);
+
+  // create array of totalLikes() of each group
+  const likeArray = _.map(groups, (name) => {
+    return {
+      author: name[0].author,
+      likes: totalLikes(name)
+    };
+  });
+
+  //return the object with the most likes
+  return favoriteBlog(likeArray);
+};
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 };
