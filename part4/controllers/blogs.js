@@ -2,10 +2,9 @@ const blogsRouter = require("express").Router();
 
 const Blog = require("../models/blog");
 
-blogsRouter.get("/", (request, response) => {
-  Blog.find({}).then((blogs) => {
-    response.json(blogs);
-  });
+blogsRouter.get("/", async (request, response) => {
+  const blogs = await Blog.find({});
+  response.json(blogs);
 });
 
 blogsRouter.get("/:id", (request, response) => {
@@ -14,7 +13,7 @@ blogsRouter.get("/:id", (request, response) => {
       response.json(blog);
     }
     response.status(404).json({
-      status: "fail",
+      status: "fail"
     });
   });
 });
@@ -37,7 +36,7 @@ blogsRouter.delete("/:id", (request, response) => {
   Blog.findByIdAndDelete(request.params.id).then((blog) => {
     response.status(204).json({
       status: "success",
-      data: null,
+      data: null
     });
   });
 });
