@@ -76,6 +76,24 @@ test("successful new blog POST", async () => {
   expect(titles).toContain(newBlog.title);
 });
 
+test("if 'likes' property is missing, default to 0", async () => {
+  const newBlog = {
+    id: "5f4302d0ce01de27c3caaa94",
+    title: "Wikipedia",
+    author: "Jimmy Wales",
+    url: "http://www.wikipedia.org"
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const response = await api.get("/api/blogs");
+  expect(response.body[initialBlogs.length].likes).toEqual(0);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
