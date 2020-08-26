@@ -18,18 +18,33 @@ blogsRouter.get("/:id", (request, response) => {
   });
 });
 
-blogsRouter.post("/", (request, response, next) => {
-  const blog = new Blog(request.body);
+blogsRouter.post("/", async (request, response, next) => {
+  try {
+    // using promises
+    //
+    // const blog = new Blog(request.body);
+    // blog
+    //   .save()
+    //   .then((result) => {
+    //     response.status(201).json(result);
+    //   })
+    //   .catch((err) => {
+    //      next(err);
+    //   });
 
-  blog
-    .save()
-    .then((result) => {
-      response.status(201).json(result);
-    })
-    .catch((err) => {
-      console.log("undefined error");
-      next();
+    const newBlog = await Blog.create(request.body);
+    response.status(201).json({
+      status: "success",
+      data: {
+        tour: newBlog
+      }
     });
+  } catch (err) {
+    response.status(400).json({
+      status: "fail",
+      message: err
+    });
+  }
 });
 
 blogsRouter.delete("/:id", (request, response) => {

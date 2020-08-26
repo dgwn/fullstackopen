@@ -24,7 +24,7 @@ const initialBlogs = [
 ];
 
 beforeEach(async () => {
-  await jest.setTimeout(30000);
+  await jest.setTimeout(50000);
   await Blog.deleteMany({});
 
   let blogObject = new Blog(initialBlogs[0]);
@@ -93,6 +93,24 @@ test("if 'likes' property is missing, default to 0", async () => {
   const response = await api.get("/api/blogs");
   expect(response.body[initialBlogs.length].likes).toEqual(0);
 });
+
+test("blog POST missing title returns '400 Bad Request'", async () => {
+  const newBlog = {
+    id: "5f4302d0ce01de27c3caaa94",
+    author: "Jimmy Wales",
+    url: "http://www.wikipedia.org",
+    likes: 6,
+    __v: 0
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(400)
+    .expect("Content-Type", /application\/json/);
+});
+
+// MOVE SOME REPEATED CALLS AND BLOG OBJECTS/COLLECTIONS TO A HELPER FILE
 
 afterAll(() => {
   mongoose.connection.close();
