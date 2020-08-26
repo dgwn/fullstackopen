@@ -18,7 +18,7 @@ blogsRouter.get("/:id", (request, response) => {
   });
 });
 
-blogsRouter.post("/", async (request, response, next) => {
+blogsRouter.post("/", async (request, response) => {
   try {
     // using promises
     //
