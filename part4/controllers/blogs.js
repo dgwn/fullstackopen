@@ -7,15 +7,27 @@ blogsRouter.get("/", async (request, response) => {
   response.json(blogs);
 });
 
-blogsRouter.get("/:id", (request, response) => {
-  Blog.findById(request.params.id).then((blog) => {
+blogsRouter.get("/:id", async (request, response) => {
+  try {
+    const blog = await Blog.findById(request.params.id);
     if (blog) {
       response.json(blog);
     }
+    next(err);
+  } catch (err) {
     response.status(404).json({
       status: "fail"
     });
-  });
+  }
+
+  // Blog.findById(request.params.id).then((blog) => {
+  //   if (blog) {
+  //     response.json(blog);
+  //   }
+  //   response.status(404).json({
+  //     status: "fail"
+  //   });
+  // });
 });
 
 blogsRouter.post("/", async (request, response) => {
