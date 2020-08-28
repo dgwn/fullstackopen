@@ -6,7 +6,6 @@ const Blog = require("../models/blog");
 
 const initialBlogs = [
   {
-    id: "5f4302d0ce01de27c3caaa9d",
     title: "Google",
     author: "Larry Page",
     url: "http://www.google.com",
@@ -14,7 +13,6 @@ const initialBlogs = [
     __v: 0
   },
   {
-    id: "5f4302d0ce01de27c3caaa93",
     title: "Facebook",
     author: "Mark Zuck",
     url: "http://www.facebook.com",
@@ -110,7 +108,20 @@ test("blog POST missing title returns '400 Bad Request'", async () => {
     .expect("Content-Type", /application\/json/);
 });
 
+test("succesful DELETE blog request", async () => {
+  const response = await api.get("/api/blogs");
+  const idToDelete = await response.body[0].id;
+  await api.delete(`/api/blogs/${idToDelete}`).expect(204);
+  const responseAfter = await api.get("/api/blogs");
+
+  expect(responseAfter.body).toHaveLength(initialBlogs.length - 1);
+});
+
 // MOVE SOME REPEATED CALLS AND BLOG OBJECTS/COLLECTIONS TO A HELPER FILE
+
+// move tests into suites?
+
+// create test for DELETE a blog
 
 afterAll(() => {
   mongoose.connection.close();
