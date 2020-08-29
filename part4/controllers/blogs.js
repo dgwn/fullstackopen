@@ -35,7 +35,7 @@ blogsRouter.post("/", async (request, response) => {
     response.status(201).json({
       status: "success",
       data: {
-        tour: newBlog
+        blog: newBlog
       }
     });
   } catch (err) {
@@ -70,6 +70,34 @@ blogsRouter.delete("/:id", async (request, response, next) => {
       .end();
   } catch (err) {
     next(err);
+  }
+});
+
+blogsRouter.patch("/:id", async (request, response, next) => {
+  try {
+    const body = await request.body;
+
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      {
+        likes: body.likes
+      },
+      { new: true }
+    );
+    response
+      .status(200)
+      .json({
+        status: "success",
+        data: {
+          blog: await updatedBlog
+        }
+      })
+      .end();
+  } catch (err) {
+    response.status(400).json({
+      status: "fail",
+      message: err
+    });
   }
 });
 

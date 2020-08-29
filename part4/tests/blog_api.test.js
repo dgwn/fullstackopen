@@ -117,11 +117,27 @@ test("succesful DELETE blog request", async () => {
   expect(responseAfter.body).toHaveLength(initialBlogs.length - 1);
 });
 
+test("successfully update the likes on a blog post", async () => {
+  const initialBlogs = await api.get("/api/blogs");
+  const blogToUpdate = await initialBlogs.body[0];
+
+  const newLikes = {
+    likes: 5
+  };
+
+  await api
+    .patch(`/api/blogs/${blogToUpdate.id}`)
+    .send(newLikes)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  const response = await api.get("/api/blogs");
+  expect(response.body[0].likes).toEqual(5);
+});
+
 // MOVE SOME REPEATED CALLS AND BLOG OBJECTS/COLLECTIONS TO A HELPER FILE
 
 // move tests into suites?
-
-// create test for DELETE a blog
 
 afterAll(() => {
   mongoose.connection.close();
