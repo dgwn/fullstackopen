@@ -1,0 +1,28 @@
+const Blog = require("../models/blog");
+
+const initialBlogs = [
+  {
+    title: "Google",
+    author: "Larry Page",
+    url: "http://www.google.com",
+    likes: 5,
+    __v: 0
+  },
+  {
+    title: "Facebook",
+    author: "Mark Zuck",
+    url: "http://www.facebook.com",
+    likes: 0,
+    __v: 0
+  }
+];
+
+const blogsInDb = async () => {
+  const blogs = await Blog.find({});
+  return blogs.map((blog) => blog.toJSON());
+};
+
+module.exports = {
+  initialBlogs,
+  blogsInDb
+};

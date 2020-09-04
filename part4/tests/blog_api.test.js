@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
+const helper = require("./test_helper");
 const app = require("../app");
 const api = supertest(app);
 const Blog = require("../models/blog");
@@ -25,10 +26,10 @@ beforeEach(async () => {
   await jest.setTimeout(50000);
   await Blog.deleteMany({});
 
-  let blogObject = new Blog(initialBlogs[0]);
+  let blogObject = new Blog(helper.initialBlogs[0]);
   await blogObject.save();
 
-  blogObject = new Blog(initialBlogs[1]);
+  blogObject = new Blog(helper.initialBlogs[1]);
   await blogObject.save();
 });
 
@@ -134,10 +135,6 @@ test("successfully update the likes on a blog post", async () => {
   const response = await api.get("/api/blogs");
   expect(response.body[0].likes).toEqual(5);
 });
-
-// MOVE SOME REPEATED CALLS AND BLOG OBJECTS/COLLECTIONS TO A HELPER FILE
-
-// move tests into suites?
 
 afterAll(() => {
   mongoose.connection.close();
