@@ -153,6 +153,115 @@ describe("when there is initially one user in db", () => {
     const usernames = usersAtEnd.map((u) => u.username);
     expect(usernames).toContain(newUser.username);
   });
+
+  test("creation fails with proper status code if username is already taken", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "root",
+      name: "root user",
+      password: "rootPass"
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("`username` must be unique");
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
+
+  test("creation fails with proper status code if username is less than 3 characters long", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "zw",
+      name: "root user",
+      password: "rootPass"
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain(
+      "`username` must be at least 3 characters"
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
+
+  test("creation fails with proper status code if password is less than 3 characters long", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "user1",
+      name: "root user",
+      password: "12"
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain(
+      "`password` must be at least 3 characters"
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
+
+  test("creation fails with proper status code if password is not given", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "TBLee",
+      name: "Tim Lee"
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain(
+      "`password` must be at least 3 characters"
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
+
+  test("creation fails with proper status code if username is not given", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      name: "root user",
+      password: "1234"
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("Invalid data entry");
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
 });
 
 afterAll(() => {
