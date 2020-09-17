@@ -149,12 +149,58 @@ test("blog POST missing title returns '400 Bad Request'", async () => {
 });
 
 test("succesful DELETE blog request", async () => {
-  const response = await api.get("/api/blogs");
-  const idToDelete = await response.body[0].id;
-  await api.delete(`/api/blogs/${idToDelete}`).expect(204);
+  // add a user
+  // post a blog under that user
+  //  create a user to login
+  const newUser = {
+    username: "TBLee",
+    name: "Tim Lee",
+    password: "wwweb123"
+  };
+
+  await api
+    .post("/api/users")
+    .send(newUser)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  // must do a login post and pull token from that, to be sent along with blog post request
+  const userLogin = {
+    username: "TBLee",
+    password: "wwweb123"
+  };
+
+  const result = await api
+    .post("/api/login")
+    .send(userLogin)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  const newBlog = {
+    id: "5f4302d0ce01de27c3caaa94",
+    title: "Wikipedia",
+    author: "Jimmy Wales",
+    url: "http://www.wikipedia.org",
+    likes: 6,
+    __v: 0
+  };
+
+  const blogResult = await api
+    .post("/api/blogs")
+    .set("Authorization", `bearer ${result.body.token}`)
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  // delete this new blog via this user
+  const idToDelete = await blogResult.body.data.blog.id;
+  await api
+    .delete(`/api/blogs/${idToDelete}`)
+    .set("Authorization", `bearer ${result.body.token}`)
+    .expect(204);
   const responseAfter = await api.get("/api/blogs");
 
-  expect(responseAfter.body).toHaveLength(helper.initialBlogs.length - 1);
+  expect(responseAfter.body).toHaveLength(helper.initialBlogs.length);
 });
 
 test("successfully update the likes on a blog post", async () => {
