@@ -17,6 +17,7 @@ beforeEach(async () => {
 
   blogObject = new Blog(helper.initialBlogs[1]);
   await blogObject.save();
+  await User.deleteMany({});
 });
 
 test("blogs are returned as json", async () => {
@@ -39,6 +40,31 @@ test("the blog has the property 'id'", async () => {
 });
 
 test("successful new blog POST", async () => {
+  //  create a user to login
+  const newUser = {
+    username: "TBLee",
+    name: "Tim Lee",
+    password: "wwweb123"
+  };
+
+  await api
+    .post("/api/users")
+    .send(newUser)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  // must do a login post and pull token from that, to be sent along with blog post request
+  const userLogin = {
+    username: "TBLee",
+    password: "wwweb123"
+  };
+
+  const result = await api
+    .post("/api/login")
+    .send(userLogin)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
   const newBlog = {
     id: "5f4302d0ce01de27c3caaa94",
     title: "Wikipedia",
@@ -50,6 +76,7 @@ test("successful new blog POST", async () => {
 
   await api
     .post("/api/blogs")
+    .set("Authorization", `bearer ${result.body.token}`)
     .send(newBlog)
     .expect(201)
     .expect("Content-Type", /application\/json/);
@@ -62,6 +89,31 @@ test("successful new blog POST", async () => {
 });
 
 test("if 'likes' property is missing, default to 0", async () => {
+  //  create a user to login
+  const newUser = {
+    username: "TBLee",
+    name: "Tim Lee",
+    password: "wwweb123"
+  };
+
+  await api
+    .post("/api/users")
+    .send(newUser)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  // must do a login post and pull token from that, to be sent along with blog post request
+  const userLogin = {
+    username: "TBLee",
+    password: "wwweb123"
+  };
+
+  const result = await api
+    .post("/api/login")
+    .send(userLogin)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
   const newBlog = {
     id: "5f4302d0ce01de27c3caaa94",
     title: "Wikipedia",
@@ -71,6 +123,7 @@ test("if 'likes' property is missing, default to 0", async () => {
 
   await api
     .post("/api/blogs")
+    .set("Authorization", `bearer ${result.body.token}`)
     .send(newBlog)
     .expect(201)
     .expect("Content-Type", /application\/json/);
