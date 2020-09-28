@@ -9,15 +9,25 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
+  const [newTitle, setNewTitle] = useState("");
+  const [newAuthor, setNewAuthor] = useState("");
+  const [newUrl, setNewUrl] = useState("http://");
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
+
+  // rerender blog list whenever the URL field changes, i.e. when the gield is reset on submit
+  useEffect(() => {
+    blogService.getAll().then((blogs) => setBlogs(blogs));
+  }, [newUrl]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
+      blogService.setToken(user.token);
     }
   }, []);
 
@@ -31,6 +41,7 @@ const App = () => {
 
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
 
+      blogService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -51,6 +62,37 @@ const App = () => {
       setPassword("");
     } catch (exception) {}
   };
+
+  const addBlog = async (event) => {
+    event.preventDefault();
+    try {
+      const blogObject = {
+        title: newTitle,
+        author: newAuthor,
+        url: newUrl
+      };
+      const newBlog = await blogService.create(blogObject);
+      setBlogs([...blogs, newBlog]);
+      setNewTitle("");
+      setNewAuthor("");
+      setNewUrl("http://");
+    } catch (exception) {}
+  };
+
+  // const addBlog = (event) => {
+  //   event.preventDefault();
+  //   const blogObject = {
+  //     title: newTitle,
+  //     author: newAuthor,
+  //     url: newUrl
+  //   };
+  //   blogService.create(blogObject).then((returnedBlog) => {
+  //     setBlogs([...blogs, returnedBlog]);
+  //     setNewTitle("");
+  //     setNewAuthor("");
+  //     setNewUrl("http://");
+  //   });
+  // };
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -89,6 +131,41 @@ const App = () => {
     </div>
   );
 
+  const blogForm = () => (
+    <form onSubmit={addBlog}>
+      <div>
+        Title:
+        <input
+          type="text"
+          value={newTitle}
+          onChange={({ target }) => setNewTitle(target.value)}
+        />
+      </div>
+
+      <div>
+        Author:
+        <input
+          type="text"
+          value={newAuthor}
+          onChange={({ target }) => setNewAuthor(target.value)}
+        />
+      </div>
+
+      <div>
+        URL:
+        <input
+          type="url"
+          value={newUrl}
+          onChange={({ target }) => setNewUrl(target.value)}
+        />
+      </div>
+
+      <button type="submit">Submit</button>
+      <br />
+      <br />
+    </form>
+  );
+
   const blogList = () => (
     <div>
       {blogs.map((blog) => (
@@ -103,6 +180,7 @@ const App = () => {
 
       {user === null && loginForm()}
       {user !== null && welcomeUser()}
+      {user !== null && blogForm()}
       {user !== null && blogList()}
     </div>
   );
