@@ -9,6 +9,8 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
+  const [notification, setNotification] = useState("");
+
   const [newTitle, setNewTitle] = useState("");
   const [newAuthor, setNewAuthor] = useState("");
   const [newUrl, setNewUrl] = useState("http://");
@@ -43,13 +45,18 @@ const App = () => {
 
       blogService.setToken(user.token);
       setUser(user);
+      setNotification("Logged In");
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+
       setUsername("");
       setPassword("");
     } catch (exception) {
-      // setErrorMessage("Wrong credentials");
-      // setTimeout(() => {
-      //   setErrorMessage(null);
-      // }, 5000);
+      setNotification("Wrong credentials");
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     }
   };
 
@@ -73,26 +80,21 @@ const App = () => {
       };
       const newBlog = await blogService.create(blogObject);
       setBlogs([...blogs, newBlog]);
+      setNotification(`"${newTitle}" has been added`);
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+
       setNewTitle("");
       setNewAuthor("");
       setNewUrl("http://");
-    } catch (exception) {}
+    } catch (exception) {
+      setNotification("Error posting blog");
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+    }
   };
-
-  // const addBlog = (event) => {
-  //   event.preventDefault();
-  //   const blogObject = {
-  //     title: newTitle,
-  //     author: newAuthor,
-  //     url: newUrl
-  //   };
-  //   blogService.create(blogObject).then((returnedBlog) => {
-  //     setBlogs([...blogs, returnedBlog]);
-  //     setNewTitle("");
-  //     setNewAuthor("");
-  //     setNewUrl("http://");
-  //   });
-  // };
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -174,9 +176,27 @@ const App = () => {
     </div>
   );
 
+  const notificationAlert = () => {
+    const notificationStyle = {
+      color: "black",
+      backgroundColor: "grey",
+      margin: "auto",
+      width: "50%",
+      textAlign: "center",
+      fontSize: "26px"
+    };
+
+    return (
+      <div>
+        <h2 style={notificationStyle}>{notification}</h2>
+      </div>
+    );
+  };
+
   return (
     <div>
       <h2>Blogs</h2>
+      {notificationAlert()}
 
       {user === null && loginForm()}
       {user !== null && welcomeUser()}
