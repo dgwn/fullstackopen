@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
+
+import Login from "./components/Login";
 import Blog from "./components/Blog";
+
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -96,33 +99,6 @@ const App = () => {
     }
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        Username:
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-
-      <div>
-        Password:
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">Login</button>
-      <br />
-      <br />
-    </form>
-  );
-
   const welcomeUser = () => (
     <div>
       Welcome {user.name}
@@ -198,7 +174,15 @@ const App = () => {
       <h2>Blogs</h2>
       {notificationAlert()}
 
-      {user === null && loginForm()}
+      {user === null && (
+        <Login
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
+      )}
       {user !== null && welcomeUser()}
       {user !== null && blogForm()}
       {user !== null && blogList()}
