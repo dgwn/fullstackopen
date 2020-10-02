@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Login from "./components/Login";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
+import BlogForm from "./components/BlogForm";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -110,41 +111,6 @@ const App = () => {
     </div>
   );
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>
-        Title:
-        <input
-          type="text"
-          value={newTitle}
-          onChange={({ target }) => setNewTitle(target.value)}
-        />
-      </div>
-
-      <div>
-        Author:
-        <input
-          type="text"
-          value={newAuthor}
-          onChange={({ target }) => setNewAuthor(target.value)}
-        />
-      </div>
-
-      <div>
-        URL:
-        <input
-          type="url"
-          value={newUrl}
-          onChange={({ target }) => setNewUrl(target.value)}
-        />
-      </div>
-
-      <button type="submit">Submit</button>
-      <br />
-      <br />
-    </form>
-  );
-
   const blogList = () => (
     <div>
       {blogs.map((blog) => (
@@ -168,7 +134,17 @@ const App = () => {
         />
       )}
       {user !== null && welcomeUser()}
-      {user !== null && blogForm()}
+      {user !== null && (
+        <BlogForm
+          addBlog={addBlog}
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newAuthor={newAuthor}
+          setNewAuthor={setNewAuthor}
+          newUrl={newUrl}
+          setNewUrl={setNewUrl}
+        />
+      )}
       {user !== null && blogList()}
     </div>
   );
