@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Login from "./components/Login";
 import Blog from "./components/Blog";
+import Notification from "./components/Notification";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -152,27 +153,10 @@ const App = () => {
     </div>
   );
 
-  const notificationAlert = () => {
-    const notificationStyle = {
-      color: "black",
-      backgroundColor: "grey",
-      margin: "auto",
-      width: "50%",
-      textAlign: "center",
-      fontSize: "26px"
-    };
-
-    return (
-      <div>
-        <h2 style={notificationStyle}>{notification}</h2>
-      </div>
-    );
-  };
-
   return (
     <div>
       <h2>Blogs</h2>
-      {notificationAlert()}
+      <Notification notification={notification} />
 
       {user === null && (
         <Login
