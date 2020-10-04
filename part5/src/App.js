@@ -1,12 +1,28 @@
+// Core
 import React, { useState, useEffect } from "react";
+import "./App.css";
 
+// Components
 import Login from "./components/Login";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
+import BlogTable from "./components/BlogTable";
 
+// Services
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+
+// Material-UI
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,7 +30,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  const [notification, setNotification] = useState("");
+  const [notification, setNotification] = useState(null);
 
   const [newTitle, setNewTitle] = useState("");
   const [newAuthor, setNewAuthor] = useState("");
@@ -105,7 +121,14 @@ const App = () => {
     <div>
       Welcome {user.name}
       <form onSubmit={handleLogout}>
-        <button type="submit">Logout</button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          type="submit"
+          style={{ marginTop: 10 }}
+        >
+          Logout
+        </Button>
       </form>
       <br />
     </div>
@@ -120,33 +143,37 @@ const App = () => {
   );
 
   return (
-    <div>
-      <h2>Blogs</h2>
-      <Notification notification={notification} />
+    <Grid container>
+      <Grid item xs={4} style={{ textAlign: "center", padding: 20 }}>
+        <h2>Blogs</h2>
+        {notification !== null && <Notification notification={notification} />}
 
-      {user === null && (
-        <Login
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-        />
-      )}
-      {user !== null && welcomeUser()}
-      {user !== null && (
-        <BlogForm
-          addBlog={addBlog}
-          newTitle={newTitle}
-          setNewTitle={setNewTitle}
-          newAuthor={newAuthor}
-          setNewAuthor={setNewAuthor}
-          newUrl={newUrl}
-          setNewUrl={setNewUrl}
-        />
-      )}
-      {user !== null && blogList()}
-    </div>
+        {user === null && (
+          <Login
+            handleLogin={handleLogin}
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+          />
+        )}
+        {user !== null && welcomeUser()}
+        {user !== null && (
+          <BlogForm
+            addBlog={addBlog}
+            newTitle={newTitle}
+            setNewTitle={setNewTitle}
+            newAuthor={newAuthor}
+            setNewAuthor={setNewAuthor}
+            newUrl={newUrl}
+            setNewUrl={setNewUrl}
+          />
+        )}
+      </Grid>
+      <Grid item xs={8}>
+        {user !== null && <BlogTable blogs={blogs} />}
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from "react";
+import Alert from "@material-ui/lab/Alert";
 
 const notificationAlert = ({ notification }) => {
   const notificationStyle = {
@@ -12,7 +13,7 @@ const notificationAlert = ({ notification }) => {
 
   return (
     <div>
-      <h2 style={notificationStyle}>{notification}</h2>
+      <Alert severity="info">{notification}</Alert>
     </div>
   );
 };

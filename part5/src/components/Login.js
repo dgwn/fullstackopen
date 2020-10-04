@@ -1,4 +1,6 @@
 import React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 const loginForm = ({
   handleLogin,
@@ -9,25 +11,37 @@ const loginForm = ({
 }) => (
   <form onSubmit={handleLogin}>
     <div>
-      Username:
+      {/* Username:
       <input
         type="text"
         value={username}
         name="Username"
         onChange={({ target }) => setUsername(target.value)}
+      /> */}
+      <TextField
+        value={username}
+        onChange={({ target }) => setUsername(target.value)}
+        label="Username"
       />
     </div>
 
     <div>
-      Password:
-      <input
-        type="password"
+      <TextField
         value={password}
-        name="Password"
         onChange={({ target }) => setPassword(target.value)}
+        label="Password"
+        type="password"
       />
     </div>
-    <button type="submit">Login</button>
+
+    <Button
+      variant="outlined"
+      color="primary"
+      type="submit"
+      style={{ marginTop: 10 }}
+    >
+      Login
+    </Button>
     <br />
     <br />
   </form>

@@ -1,4 +1,6 @@
 import React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 const blogForm = ({
   addBlog,
@@ -11,33 +13,38 @@ const blogForm = ({
 }) => (
   <form onSubmit={addBlog}>
     <div>
-      Title:
-      <input
-        type="text"
+      <TextField
         value={newTitle}
         onChange={({ target }) => setNewTitle(target.value)}
+        label="Title"
       />
     </div>
 
     <div>
-      Author:
-      <input
-        type="text"
+      <TextField
         value={newAuthor}
         onChange={({ target }) => setNewAuthor(target.value)}
+        label="Author"
       />
     </div>
 
     <div>
-      URL:
-      <input
-        type="url"
+      <TextField
         value={newUrl}
+        type="url"
         onChange={({ target }) => setNewUrl(target.value)}
+        label="URL"
       />
     </div>
 
-    <button type="submit">Submit</button>
+    <Button
+      variant="outlined"
+      color="primary"
+      type="submit"
+      style={{ marginTop: 10 }}
+    >
+      Submit
+    </Button>
     <br />
     <br />
   </form>
