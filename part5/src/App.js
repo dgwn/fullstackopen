@@ -8,6 +8,7 @@ import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 import BlogTable from "./components/BlogTable";
+import Togglable from "./components/Togglable";
 
 // Services
 import blogService from "./services/blogs";
@@ -35,6 +36,8 @@ const App = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newAuthor, setNewAuthor] = useState("");
   const [newUrl, setNewUrl] = useState("http://");
+
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -109,6 +112,7 @@ const App = () => {
       setNewTitle("");
       setNewAuthor("");
       setNewUrl("http://");
+      setVisible(false);
     } catch (exception) {
       setNotification("Error posting blog");
       setTimeout(() => {
@@ -159,15 +163,21 @@ const App = () => {
         )}
         {user !== null && welcomeUser()}
         {user !== null && (
-          <BlogForm
-            addBlog={addBlog}
-            newTitle={newTitle}
-            setNewTitle={setNewTitle}
-            newAuthor={newAuthor}
-            setNewAuthor={setNewAuthor}
-            newUrl={newUrl}
-            setNewUrl={setNewUrl}
-          />
+          <Togglable
+            buttonLabel="Post Blog"
+            visible={visible}
+            setVisible={setVisible}
+          >
+            <BlogForm
+              addBlog={addBlog}
+              newTitle={newTitle}
+              setNewTitle={setNewTitle}
+              newAuthor={newAuthor}
+              setNewAuthor={setNewAuthor}
+              newUrl={newUrl}
+              setNewUrl={setNewUrl}
+            />
+          </Togglable>
         )}
       </Grid>
       <Grid item xs={8}>
