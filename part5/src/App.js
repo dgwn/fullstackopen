@@ -7,7 +7,7 @@ import Login from "./components/Login";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
-import BlogTable from "./components/BlogTable";
+// import BlogTable from "./components/BlogTable";
 import Togglable from "./components/Togglable";
 
 // Services
@@ -17,13 +17,6 @@ import loginService from "./services/login";
 // Material-UI
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -32,10 +25,6 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   const [notification, setNotification] = useState(null);
-
-  const [newTitle, setNewTitle] = useState("");
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newUrl, setNewUrl] = useState("http://");
 
   const [visible, setVisible] = useState(false);
 
@@ -46,7 +35,7 @@ const App = () => {
   // rerender blog list whenever the URL field changes, i.e. when the gield is reset on submit
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, [newUrl]);
+  }, [notification]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -94,25 +83,25 @@ const App = () => {
     } catch (exception) {}
   };
 
-  const addBlog = async (event) => {
-    event.preventDefault();
+  const addBlog = async (blogObject) => {
+    // event.preventDefault();
     try {
-      const blogObject = {
-        title: newTitle,
-        author: newAuthor,
-        url: newUrl
-      };
+      // const blogObject = {
+      //   title: newTitle,
+      //   author: newAuthor,
+      //   url: newUrl
+      // };
       const newBlog = await blogService.create(blogObject);
       setBlogs([...blogs, newBlog]);
-      setNotification(`"${newTitle}" has been added`);
+      setNotification(`"${blogObject.title}" has been added`);
       setTimeout(() => {
         setNotification(null);
       }, 5000);
 
-      setNewTitle("");
-      setNewAuthor("");
-      setNewUrl("http://");
-      setVisible(false);
+      // setNewTitle("");
+      // setNewAuthor("");
+      // setNewUrl("http://");
+      // setVisible(false);
     } catch (exception) {
       setNotification("Error posting blog");
       setTimeout(() => {
@@ -168,20 +157,13 @@ const App = () => {
             visible={visible}
             setVisible={setVisible}
           >
-            <BlogForm
-              addBlog={addBlog}
-              newTitle={newTitle}
-              setNewTitle={setNewTitle}
-              newAuthor={newAuthor}
-              setNewAuthor={setNewAuthor}
-              newUrl={newUrl}
-              setNewUrl={setNewUrl}
-            />
+            <BlogForm createBlog={addBlog} />
           </Togglable>
         )}
       </Grid>
       <Grid item xs={8}>
-        {user !== null && <BlogTable blogs={blogs} />}
+        {user !== null && blogList()}
+        {/* {user !== null && <BlogTable blogs={blogs} />} */}
       </Grid>
     </Grid>
   );

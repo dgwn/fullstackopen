@@ -1,53 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-const blogForm = ({
-  addBlog,
-  newTitle,
-  setNewTitle,
-  newAuthor,
-  setNewAuthor,
-  newUrl,
-  setNewUrl
-}) => (
-  <form onSubmit={addBlog}>
-    <div>
-      <TextField
-        value={newTitle}
-        onChange={({ target }) => setNewTitle(target.value)}
-        label="Title"
-      />
-    </div>
+const BlogForm = ({ createBlog }) => {
+  const [newTitle, setNewTitle] = useState("");
+  const [newAuthor, setNewAuthor] = useState("");
+  const [newUrl, setNewUrl] = useState("http://");
 
-    <div>
-      <TextField
-        value={newAuthor}
-        onChange={({ target }) => setNewAuthor(target.value)}
-        label="Author"
-      />
-    </div>
+  const addBlog = (event) => {
+    event.preventDefault();
+    createBlog({
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl
+    });
+    setNewTitle("");
+    setNewAuthor("");
+    setNewUrl("http://");
+  };
 
-    <div>
-      <TextField
-        value={newUrl}
-        type="url"
-        onChange={({ target }) => setNewUrl(target.value)}
-        label="URL"
-      />
-    </div>
+  return (
+    <form onSubmit={addBlog}>
+      <div>
+        <TextField
+          value={newTitle}
+          onChange={({ target }) => setNewTitle(target.value)}
+          label="Title"
+        />
+      </div>
 
-    <Button
-      variant="outlined"
-      color="primary"
-      type="submit"
-      style={{ marginTop: 10 }}
-    >
-      Submit
-    </Button>
-    <br />
-    <br />
-  </form>
-);
+      <div>
+        <TextField
+          value={newAuthor}
+          onChange={({ target }) => setNewAuthor(target.value)}
+          label="Author"
+        />
+      </div>
 
-export default blogForm;
+      <div>
+        <TextField
+          value={newUrl}
+          type="url"
+          onChange={({ target }) => setNewUrl(target.value)}
+          label="URL"
+        />
+      </div>
+
+      <Button
+        variant="outlined"
+        color="primary"
+        type="submit"
+        style={{ marginTop: 10 }}
+      >
+        Submit
+      </Button>
+      <br />
+      <br />
+    </form>
+  );
+};
+export default BlogForm;
