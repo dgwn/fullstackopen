@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 
 const Togglable = (props) => {
-  const hideWhenVisible = { display: props.visible ? "none" : "" };
-  const showWhenVisible = { display: props.visible ? "" : "none" };
+  const [visible, setVisible] = useState(false);
+
+  const hideWhenVisible = { display: visible ? "none" : "" };
+  const showWhenVisible = { display: visible ? "" : "none" };
 
   const toggleVisibility = () => {
-    props.setVisible(!props.visible);
+    setVisible(!visible);
   };
 
   return (

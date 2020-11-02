@@ -26,7 +26,7 @@ const App = () => {
 
   const [notification, setNotification] = useState(null);
 
-  const [visible, setVisible] = useState(false);
+  // const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -130,7 +130,31 @@ const App = () => {
   const blogList = () => (
     <div>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <div
+          style={{
+            border: "1px solid black",
+            marginBottom: ".5rem",
+            padding: "1rem",
+            width: "20rem"
+          }}
+        >
+          <Blog key={blog.id} blog={blog} />
+          <Togglable buttonLabel="View">
+            {blog.url}
+            <br />
+            likes: {blog.likes}
+            <Button
+              variant="outlined"
+              color="primary"
+              style={{ marginLeft: ".5rem" }}
+            >
+              Like
+            </Button>
+            <br />
+            {blog.user.name}
+            <br />
+          </Togglable>
+        </div>
       ))}
     </div>
   );
@@ -152,11 +176,7 @@ const App = () => {
         )}
         {user !== null && welcomeUser()}
         {user !== null && (
-          <Togglable
-            buttonLabel="Post Blog"
-            visible={visible}
-            setVisible={setVisible}
-          >
+          <Togglable buttonLabel="Post Blog">
             <BlogForm createBlog={addBlog} />
           </Togglable>
         )}
