@@ -151,7 +151,8 @@ const App = () => {
               Like
             </Button>
             <br />
-            {blog.user.name}
+            {/* blog.user.name must be expressed after result of a conditional, otherwise  blog details try to render before post request goes through*/}
+            {blog.user !== undefined && blog.user.name}
             <br />
           </Togglable>
         </div>
