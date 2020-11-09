@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useImperativeHandle } from "react";
 import Button from "@material-ui/core/Button";
 
-const Togglable = (props) => {
+const Togglable = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? "none" : "" };
@@ -10,6 +10,12 @@ const Togglable = (props) => {
   const toggleVisibility = () => {
     setVisible(!visible);
   };
+
+  useImperativeHandle(ref, () => {
+    return {
+      toggleVisibility
+    };
+  });
 
   return (
     <div>
@@ -37,6 +43,6 @@ const Togglable = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default Togglable;

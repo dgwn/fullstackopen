@@ -1,5 +1,5 @@
 // Core
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 // Components
@@ -91,6 +91,7 @@ const App = () => {
       //   author: newAuthor,
       //   url: newUrl
       // };
+      blogFormRef.current.toggleVisibility();
       const newBlog = await blogService.create(blogObject);
       setBlogs([...blogs, newBlog]);
       setNotification(`"${blogObject.title}" has been added`);
@@ -160,6 +161,8 @@ const App = () => {
     </div>
   );
 
+  const blogFormRef = useRef();
+
   return (
     <Grid container>
       <Grid item xs={4} style={{ textAlign: "center", padding: 20 }}>
@@ -177,7 +180,7 @@ const App = () => {
         )}
         {user !== null && welcomeUser()}
         {user !== null && (
-          <Togglable buttonLabel="Post Blog">
+          <Togglable buttonLabel="Post Blog" ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Togglable>
         )}
