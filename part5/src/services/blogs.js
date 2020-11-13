@@ -19,4 +19,13 @@ const create = async (newObject) => {
   return response.data;
 };
 
-export default { getAll, create, setToken };
+const patch = async (blogToUpdate, likes) => {
+  const newLikes = {
+    likes: likes
+  };
+
+  const response = await axios.patch(baseUrl + "/" + blogToUpdate, newLikes);
+  return response.data;
+};
+
+export default { getAll, create, patch, setToken };

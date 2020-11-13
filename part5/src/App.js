@@ -111,6 +111,25 @@ const App = () => {
     }
   };
 
+  const updateLikes = async (blog) => {
+    try {
+      setNotification(null);
+      const newLikes = await blogService.patch(blog.id, blog.likes + 1);
+
+      setNotification(
+        `"${blog.title}" has been updated to ${newLikes.data.blog.likes} likes`
+      );
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+    } catch (exception) {
+      setNotification("Error updating blog");
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+    }
+  };
+
   const welcomeUser = () => (
     <div>
       Welcome {user.name}
@@ -148,6 +167,7 @@ const App = () => {
               variant="outlined"
               color="primary"
               style={{ marginLeft: ".5rem" }}
+              onClick={() => updateLikes(blog)}
             >
               Like
             </Button>
