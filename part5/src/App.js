@@ -149,35 +149,37 @@ const App = () => {
 
   const blogList = () => (
     <div>
-      {blogs.map((blog) => (
-        <div
-          style={{
-            border: "1px solid black",
-            marginBottom: ".5rem",
-            padding: "1rem",
-            width: "20rem"
-          }}
-        >
-          <Blog key={blog.id} blog={blog} />
-          <Togglable buttonLabel="View">
-            {blog.url}
-            <br />
-            likes: {blog.likes}
-            <Button
-              variant="outlined"
-              color="primary"
-              style={{ marginLeft: ".5rem" }}
-              onClick={() => updateLikes(blog)}
-            >
-              Like
-            </Button>
-            <br />
-            {/* blog.user.name must be expressed after result of a conditional, otherwise  blog details try to render before post request goes through*/}
-            {blog.user !== undefined && blog.user.name}
-            <br />
-          </Togglable>
-        </div>
-      ))}
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) => (
+          <div
+            style={{
+              border: "1px solid black",
+              marginBottom: ".5rem",
+              padding: "1rem",
+              width: "20rem"
+            }}
+          >
+            <Blog key={blog.id} blog={blog} />
+            <Togglable buttonLabel="View">
+              {blog.url}
+              <br />
+              likes: {blog.likes}
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{ marginLeft: ".5rem" }}
+                onClick={() => updateLikes(blog)}
+              >
+                Like
+              </Button>
+              <br />
+              {/* blog.user.name must be expressed after result of a conditional, otherwise  blog details try to render before post request goes through*/}
+              {blog.user !== undefined && blog.user.name}
+              <br />
+            </Togglable>
+          </div>
+        ))}
     </div>
   );
 
