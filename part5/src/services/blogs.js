@@ -28,4 +28,12 @@ const patch = async (blogToUpdate, likes) => {
   return response.data;
 };
 
-export default { getAll, create, patch, setToken };
+const remove = async (blogToDelete) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+  const response = await axios.delete(baseUrl + "/" + blogToDelete, config);
+  return response.data;
+};
+
+export default { getAll, create, patch, remove, setToken };

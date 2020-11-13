@@ -111,6 +111,26 @@ const App = () => {
     }
   };
 
+  const deleteBlog = async (blog) => {
+    try {
+      console.log("adf");
+      const deleted = await blogService.remove(blog.id);
+
+      setNotification(`"${blog.title}" has been deleted`);
+
+      // find a way to close the next blog menu when a previous blog is removed
+
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+    } catch (exception) {
+      setNotification("Error deleting blog");
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+    }
+  };
+
   const updateLikes = async (blog) => {
     try {
       setNotification(null);
@@ -176,6 +196,23 @@ const App = () => {
               <br />
               {/* blog.user.name must be expressed after result of a conditional, otherwise  blog details try to render before post request goes through*/}
               {blog.user !== undefined && blog.user.name}
+              <br />
+              {/*  same as above */}
+              {blog.user !== undefined && blog.user.name === user.name && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    if (
+                      window.confirm("Do you really want to remove this blog?")
+                    ) {
+                      deleteBlog(blog);
+                    }
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
               <br />
             </Togglable>
           </div>
