@@ -173,6 +173,7 @@ const App = () => {
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
           <div
+            key={blog.id}
             style={{
               border: "1px solid black",
               marginBottom: ".5rem",
