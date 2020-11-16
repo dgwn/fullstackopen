@@ -75,12 +75,10 @@ const App = () => {
 
   const handleLogout = async (event) => {
     event.preventDefault();
-    try {
-      window.localStorage.removeItem("loggedBlogAppUser");
-      setUser(null);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {}
+    window.localStorage.removeItem("loggedBlogAppUser");
+    setUser(null);
+    setUsername("");
+    setPassword("");
   };
 
   const addBlog = async (blogObject) => {
@@ -113,8 +111,7 @@ const App = () => {
 
   const deleteBlog = async (blog) => {
     try {
-      console.log("adf");
-      const deleted = await blogService.remove(blog.id);
+      await blogService.remove(blog.id);
 
       setNotification(`"${blog.title}" has been deleted`);
 

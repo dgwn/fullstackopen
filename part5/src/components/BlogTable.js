@@ -27,7 +27,7 @@ const BlogTable = ({ blogs }) => {
         </TableHead>
         <TableBody>
           {blogs.map((blog) => (
-            <TableRow>
+            <TableRow key={blog.title}>
               <TableCell component="th" scope="row">
                 {blog.title}
               </TableCell>
