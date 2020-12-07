@@ -31,7 +31,7 @@ const Togglable = React.forwardRef((props, ref) => {
           {props.buttonLabel}
         </Button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
         {props.children}
         <Button
           variant="contained"
