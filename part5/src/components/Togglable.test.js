@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 
 describe("<Togglable />", () => {
   let component;
+  const updateLikes = jest.fn();
 
   beforeEach(() => {
     const blog = {
@@ -29,7 +30,7 @@ describe("<Togglable />", () => {
             variant="outlined"
             color="primary"
             style={{ marginLeft: ".5rem" }}
-            onClick={() => updateLikes(blog)}
+            onClick={() => updateLikes()}
           >
             Like
           </Button>
@@ -71,5 +72,18 @@ describe("<Togglable />", () => {
     expect(component.container).toHaveTextContent("likes: 5");
     expect(component.container).toHaveTextContent("http://www.google.com");
     expect(div).toHaveStyle("display: block");
+  });
+
+  test("clicking 'like' button calls event handler twice", () => {
+    const div = component.container.querySelector(".togglableContent");
+
+    const viewButton = component.getByText("View");
+    fireEvent.click(viewButton);
+
+    const likeButton = component.getByText("Like");
+    fireEvent.click(likeButton);
+    fireEvent.click(likeButton);
+
+    expect(updateLikes.mock.calls).toHaveLength(2);
   });
 });
