@@ -1,31 +1,32 @@
-import React, { useState } from "react"
-import Button from "@material-ui/core/Button"
-import TextField from "@material-ui/core/TextField"
+import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 const BlogForm = ({ createBlog }) => {
-  const [newTitle, setNewTitle] = useState("")
-  const [newAuthor, setNewAuthor] = useState("")
-  const [newUrl, setNewUrl] = useState("http://")
+  const [newTitle, setNewTitle] = useState("");
+  const [newAuthor, setNewAuthor] = useState("");
+  const [newUrl, setNewUrl] = useState("http://");
 
   const addBlog = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     createBlog({
       title: newTitle,
       author: newAuthor,
       url: newUrl
-    })
-    setNewTitle("")
-    setNewAuthor("")
-    setNewUrl("http://")
-  }
+    });
+    setNewTitle("");
+    setNewAuthor("");
+    setNewUrl("http://");
+  };
 
   return (
-    <form onSubmit={addBlog}>
+    <form onSubmit={addBlog} id="blogForm">
       <div>
         <TextField
           value={newTitle}
           onChange={({ target }) => setNewTitle(target.value)}
           label="Title"
+          id="titleInput"
         />
       </div>
 
@@ -34,6 +35,7 @@ const BlogForm = ({ createBlog }) => {
           value={newAuthor}
           onChange={({ target }) => setNewAuthor(target.value)}
           label="Author"
+          id="authorInput"
         />
       </div>
 
@@ -43,6 +45,7 @@ const BlogForm = ({ createBlog }) => {
           type="url"
           onChange={({ target }) => setNewUrl(target.value)}
           label="URL"
+          id="urlInput"
         />
       </div>
 
@@ -57,6 +60,6 @@ const BlogForm = ({ createBlog }) => {
       <br />
       <br />
     </form>
-  )
-}
-export default BlogForm
+  );
+};
+export default BlogForm;
