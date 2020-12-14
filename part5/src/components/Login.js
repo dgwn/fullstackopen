@@ -1,6 +1,6 @@
-import React from "react"
-import Button from "@material-ui/core/Button"
-import TextField from "@material-ui/core/TextField"
+import React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 const loginForm = ({
   handleLogin,
@@ -22,6 +22,7 @@ const loginForm = ({
         value={username}
         onChange={({ target }) => setUsername(target.value)}
         label="Username"
+        id="username"
       />
     </div>
 
@@ -31,6 +32,7 @@ const loginForm = ({
         onChange={({ target }) => setPassword(target.value)}
         label="Password"
         type="password"
+        id="password"
       />
     </div>
 
@@ -39,12 +41,13 @@ const loginForm = ({
       color="primary"
       type="submit"
       style={{ marginTop: 10 }}
+      id="login-button"
     >
       Login
     </Button>
     <br />
     <br />
   </form>
-)
+);
 
-export default loginForm
+export default loginForm;
