@@ -3,7 +3,8 @@ module.exports = {
     commonjs: true,
     es6: true,
     node: true,
-    jest: true
+    jest: true,
+    cypress: true
   },
   extends: "eslint:recommended",
   globals: {
@@ -13,6 +14,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018
   },
+  plugins: ["react", "jest", "cypress"],
   rules: {
     "no-console": 0,
     "no-trailing-spaces": "error",
