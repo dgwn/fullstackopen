@@ -41,4 +41,19 @@ describe("Blog app", function () {
     cy.contains("#login-button").should("not.exist");
     cy.contains("Post Blog");
   });
+
+  describe("when logged in", function () {
+    beforeEach(function () {
+      cy.login({ username: "tester", password: "testpass" });
+    });
+
+    it("a blog can be created", function () {
+      cy.contains("Post Blog").click();
+      cy.get("#titleInput").type("A New Blog");
+      cy.get("#authorInput").type("F. Kafka");
+      cy.get("#urlInput").type("http://www.google.com");
+      cy.contains("Submit").click();
+      cy.contains("A New Blog");
+    });
+  });
 });
