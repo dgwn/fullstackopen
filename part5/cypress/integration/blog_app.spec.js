@@ -55,5 +55,18 @@ describe("Blog app", function () {
       cy.contains("Submit").click();
       cy.contains("A New Blog");
     });
+
+    it("once created, a blog can be liked", function () {
+      cy.postBlog({
+        title: "A New Blog",
+        author: "F. Kafka",
+        url: "http://www.google.com",
+        token: JSON.parse(window.localStorage.loggedBlogAppUser).token
+      });
+      cy.contains("A New Blog").parent().contains("View").click();
+      cy.contains("A New Blog").parent().contains("Like").click();
+      cy.contains("has been updated to");
+      cy.contains('"A New Blog" - F. Kafka').parent().contains("likes: 1");
+    });
   });
 });
