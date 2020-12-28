@@ -182,7 +182,10 @@ const App = () => {
             <Togglable buttonLabel="View">
               {blog.url}
               <br />
-              likes: {blog.likes}
+              <div style={{ display: "flex" }}>
+                likes: &nbsp;
+                <div className="likesNumber"> {blog.likes}</div>
+              </div>
               <Button
                 variant="outlined"
                 color="primary"
