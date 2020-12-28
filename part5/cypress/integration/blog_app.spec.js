@@ -68,5 +68,44 @@ describe("Blog app", function () {
       cy.contains("has been updated to");
       cy.contains('"A New Blog" - F. Kafka').parent().contains("likes: 1");
     });
+
+    it("the user who created a blog can delete it", function () {
+      cy.postBlog({
+        title: "A New Blog",
+        author: "F. Kafka",
+        url: "http://www.google.com",
+        token: JSON.parse(window.localStorage.loggedBlogAppUser).token
+      });
+      cy.contains("A New Blog").parent().contains("View").click();
+      cy.contains('"A New Blog" - F. Kafka')
+        .parent()
+        .contains("Delete")
+        .click();
+      cy.contains("has been deleted");
+      cy.contains('"A New Blog" - F. Kafka').should("not.exist");
+    });
+
+    it("other users can not delete somebody else's blog", function () {
+      const user2 = {
+        username: "tester2",
+        name: "B. Tester",
+        password: "testpass"
+      };
+      cy.postBlog({
+        title: "A New Blog",
+        author: "F. Kafka",
+        url: "http://www.google.com",
+        token: JSON.parse(window.localStorage.loggedBlogAppUser).token
+      });
+      cy.contains("Logout").click();
+      cy.request("POST", "http://localhost:3003/api/users/", user2);
+
+      cy.login({ username: "tester2", password: "testpass" });
+      cy.contains("A New Blog").parent().contains("View").click();
+      cy.contains('"A New Blog" - F. Kafka')
+        .parent()
+        .contains("Delete")
+        .should("not.exist");
+    });
   });
 });
