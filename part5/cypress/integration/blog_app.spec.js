@@ -107,5 +107,68 @@ describe("Blog app", function () {
         .contains("Delete")
         .should("not.exist");
     });
+
+    it("blogs are ordered according to likes (most to least)", function () {
+      cy.postBlog({
+        title: "A New Blog",
+        author: "F. Kafka",
+        url: "http://www.google.com",
+        token: JSON.parse(window.localStorage.loggedBlogAppUser).token
+      });
+      cy.postBlog({
+        title: "Another New Blog",
+        author: "F. Kafka",
+        url: "http://www.google.com",
+        token: JSON.parse(window.localStorage.loggedBlogAppUser).token
+      });
+      cy.postBlog({
+        title: "Yet Another New Blog",
+        author: "F. Kafka",
+        url: "http://www.google.com",
+        token: JSON.parse(window.localStorage.loggedBlogAppUser).token
+      });
+
+      // open menus
+      cy.contains("A New Blog").parent().contains("View").click();
+      cy.contains("Another New Blog").parent().contains("View").click();
+      cy.contains("Yet Another New Blog").parent().contains("View").click();
+
+      // like blogs
+      for (let i = 0; i < 2; i++) {
+        cy.contains('"A New Blog" - F. Kafka')
+          .parent()
+          .contains("Like")
+          .click();
+        cy.wait(500);
+      }
+      for (let i = 0; i < 6; i++) {
+        cy.contains('"Another New Blog" - F. Kafka')
+          .parent()
+          .contains("Like")
+          .click();
+        cy.wait(500);
+      }
+      for (let i = 0; i < 4; i++) {
+        cy.contains('"Yet Another New Blog" - F. Kafka')
+          .parent()
+          .contains("Like")
+          .click();
+        cy.wait(500);
+      }
+
+      // get all elements with likesNumber class
+      cy.get(".likesNumber").then(($elements) => {
+        // create an array of the number of likes for each blog as they appear in the DOM
+        const DOMNums = $elements
+          .map((index, html) => Cypress.$(html).text())
+          .get();
+
+        const sortedDOMNums = DOMNums.slice().sort(function (a, b) {
+          return b - a;
+        });
+        // compare the array to a sorted (descending) copy of that array (sortedDOMNums)
+        expect(DOMNums, "Items are sorted").to.deep.equal(sortedDOMNums);
+      });
+    });
   });
 });
