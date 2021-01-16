@@ -8,6 +8,8 @@ const notificationReducer = (state = "", action) => {
       const content_new = action.data.content;
       const alertText_new = `You added the anecdote: "${content_new}"`;
       return alertText_new;
+    case "RESET_ALERT":
+      return "";
     default:
       return state;
   }
@@ -29,6 +31,10 @@ export const creationNotification = (content) => {
       content
     }
   };
+};
+
+export const resetNotification = () => {
+  return { type: "RESET_ALERT" };
 };
 
 export default notificationReducer;
