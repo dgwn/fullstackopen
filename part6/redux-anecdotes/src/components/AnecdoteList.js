@@ -5,7 +5,16 @@ import { voteNotification } from "../reducers/notificationReducer";
 import { resetNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes);
+  const anecdotes = useSelector((state) => {
+    if (state.filter === "") {
+      return state.anecdotes;
+    } else {
+      return state.anecdotes.filter((anecdote) =>
+        anecdote.content.toLowerCase().includes(state.filter.toLowerCase())
+      );
+    }
+  });
+
   const dispatch = useDispatch();
 
   const vote = (id, content) => {
