@@ -7,6 +7,8 @@
 //   "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it."
 // ];
 
+import anecdoteService from "../services/anecdotes";
+
 // const getId = () => (100000 * Math.random()).toFixed(0);
 
 // const asObject = (anecdote) => {
@@ -68,9 +70,12 @@ export const voteAnecdote = (id) => {
 };
 
 export const initializeAnecdotes = (anecdotes) => {
-  return {
-    type: "INIT_ANECDOTES",
-    data: anecdotes
+  return async (dispatch) => {
+    const anecdotes = await anecdoteService.getAll();
+    dispatch({
+      type: "INIT_ANECDOTES",
+      data: anecdotes
+    });
   };
 };
 
