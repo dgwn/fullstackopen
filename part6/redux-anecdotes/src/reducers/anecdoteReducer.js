@@ -54,9 +54,12 @@ const anecdoteReducer = (state = [], action) => {
 };
 
 export const createAnecdote = (data) => {
-  return {
-    type: "NEW",
-    data
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(data);
+    dispatch({
+      type: "NEW",
+      data: newAnecdote
+    });
   };
 };
 
