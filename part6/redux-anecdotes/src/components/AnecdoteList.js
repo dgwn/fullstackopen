@@ -19,8 +19,13 @@ const AnecdoteList = () => {
 
   const vote = (id, content) => {
     console.log("vote", id);
+
+    const votes = anecdotes.filter((anecdote) => {
+      return anecdote.id === id;
+    })[0].votes;
+
     dispatch(voteNotification(content));
-    dispatch(voteAnecdote(id));
+    dispatch(voteAnecdote(id, votes));
     setTimeout(() => {
       dispatch(resetNotification());
     }, 5000);
