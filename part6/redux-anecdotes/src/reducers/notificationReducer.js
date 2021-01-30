@@ -1,13 +1,9 @@
 const notificationReducer = (state = "", action) => {
   switch (action.type) {
-    case "VOTE_ALERT":
-      const content_vote = action.data.content;
-      const alertText_vote = `You voted for "${content_vote}"`;
-      return alertText_vote;
-    case "NEW_ALERT":
-      const content_new = action.data.content;
-      const alertText_new = `You added the anecdote: "${content_new}"`;
-      return alertText_new;
+    case "SET_ALERT":
+      const content = action.data.content;
+      return content;
+
     case "RESET_ALERT":
       return "";
     default:
@@ -15,21 +11,19 @@ const notificationReducer = (state = "", action) => {
   }
 };
 
-export const voteNotification = (content) => {
-  return {
-    type: "VOTE_ALERT",
-    data: {
-      content
-    }
-  };
-};
+export const setNotification = (content, seconds) => {
+  return async (dispatch) => {
+    await dispatch({
+      type: "SET_ALERT",
+      data: {
+        content
+      }
+    });
 
-export const creationNotification = (content) => {
-  return {
-    type: "NEW_ALERT",
-    data: {
-      content
-    }
+    const timeout = (await seconds) * 1000;
+    setTimeout(() => {
+      dispatch(resetNotification());
+    }, timeout);
   };
 };
 
