@@ -40,7 +40,8 @@ const anecdoteReducer = (state = [], action) => {
       const newContent = action.data.content;
       const newAnecdote = {
         content: newContent,
-        votes: 0
+        votes: 0,
+        id: action.data.id
       };
       console.log([...state, newAnecdote]);
 
