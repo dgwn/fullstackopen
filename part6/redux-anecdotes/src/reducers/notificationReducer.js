@@ -1,3 +1,5 @@
+let notificationTimeout;
+
 const notificationReducer = (state = "", action) => {
   switch (action.type) {
     case "SET_ALERT":
@@ -20,10 +22,11 @@ export const setNotification = (content, seconds) => {
       }
     });
 
-    const timeout = (await seconds) * 1000;
-    setTimeout(() => {
+    const timeoutTime = (await seconds) * 1000;
+    clearTimeout(notificationTimeout);
+    notificationTimeout = setTimeout(() => {
       dispatch(resetNotification());
-    }, timeout);
+    }, timeoutTime);
   };
 };
 
