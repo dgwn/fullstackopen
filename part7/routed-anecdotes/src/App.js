@@ -4,7 +4,8 @@ import {
   Switch,
   Route,
   Link,
-  useParams
+  useParams,
+  useHistory
 } from "react-router-dom";
 
 const Menu = () => {
@@ -45,7 +46,10 @@ const Anecdote = ({ anecdotes }) => {
 
   return (
     <div>
-      <h2>{anecdote.content}</h2>
+      <h2>
+        "{anecdote.content}" by {anecdote.author}
+      </h2>
+      <p>has {anecdote.votes} votes.</p>
     </div>
   );
 };
@@ -91,6 +95,8 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
 
+  const history = useHistory();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
@@ -99,6 +105,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     });
+
+    history.push("/");
   };
 
   return (
@@ -158,6 +166,11 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote));
+    setNotification(`${anecdote.content} has been added`);
+
+    setTimeout(() => {
+      setNotification("");
+    }, 10000);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -178,6 +191,8 @@ const App = () => {
       <h1>Software anecdotes</h1>
       <Router>
         <Menu />
+        {notification}
+
         <Switch>
           <Route path="/create">
             <CreateNew addNew={addNew} />
