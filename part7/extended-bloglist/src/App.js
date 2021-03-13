@@ -84,23 +84,12 @@ const App = () => {
   };
 
   const addBlog = async (blogObject) => {
-    // event.preventDefault();
     try {
-      // const blogObject = {
-      //   title: newTitle,
-      //   author: newAuthor,
-      //   url: newUrl
-      // };
       blogFormRef.current.toggleVisibility();
 
       dispatch(createBlog(blogObject));
 
       dispatch(setNotification(`"${blogObject.title}" has been added`));
-
-      // setNewTitle("");
-      // setNewAuthor("");
-      // setNewUrl("http://");
-      // setVisible(false);
     } catch (exception) {
       dispatch(setNotification("Error posting blog"));
     }
