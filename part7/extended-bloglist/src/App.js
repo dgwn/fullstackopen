@@ -23,7 +23,12 @@ import {
   setNotification,
   resetNotification
 } from "./reducers/notificationReducer";
-import { createBlog, initBlogs, voteBlog } from "./reducers/blogReducer";
+import {
+  createBlog,
+  initBlogs,
+  voteBlog,
+  removeBlog
+} from "./reducers/blogReducer";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -97,7 +102,8 @@ const App = () => {
 
   const deleteBlog = async (blog) => {
     try {
-      await blogService.remove(blog.id);
+      // await blogService.remove(blog.id);
+      dispatch(removeBlog(blog.id));
       dispatch(setNotification(`"${blog.title}" has been deleted`));
     } catch (exception) {
       dispatch(setNotification("Error deleting blog"));
