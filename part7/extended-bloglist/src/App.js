@@ -23,12 +23,12 @@ import {
   setNotification,
   resetNotification
 } from "./reducers/notificationReducer";
+import { createBlog, initBlogs } from "./reducers/blogReducer";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -36,16 +36,13 @@ const App = () => {
   // const [visible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
-  const notification = useSelector((state) => state);
+  const notification = useSelector((state) => state.notification);
+  const blogs = useSelector((state) => state.blogs);
 
+  // rerender blog list whenever the URL field changes, i.e. when the field is reset on submit
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
-
-  // rerender blog list whenever the URL field changes, i.e. when the gield is reset on submit
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, [notification]);
+    dispatch(initBlogs());
+  }, [notification, dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -95,8 +92,8 @@ const App = () => {
       //   url: newUrl
       // };
       blogFormRef.current.toggleVisibility();
-      const newBlog = await blogService.create(blogObject);
-      setBlogs([...blogs, newBlog]);
+
+      dispatch(createBlog(blogObject));
 
       dispatch(setNotification(`"${blogObject.title}" has been added`));
 
