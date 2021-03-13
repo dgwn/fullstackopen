@@ -7,10 +7,16 @@ const blogReducer = (state = [], action) => {
     case "INIT_BLOGS":
       return action.data;
     case "CREATE_BLOG":
-      console.log(action.data.data.blog);
       const newContent = { ...action.data.data.blog, id: getId() };
-      console.log(newContent);
       return [...state, newContent];
+    case "VOTE":
+      const id = action.data.data.blog.id;
+      const blogToChange = state.find((n) => n.id === id);
+      const changedBlog = {
+        ...blogToChange,
+        likes: blogToChange.likes + 1
+      };
+      return state.map((blog) => (blog.id !== id ? blog : changedBlog));
     default:
       return state;
   }

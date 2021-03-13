@@ -23,7 +23,7 @@ import {
   setNotification,
   resetNotification
 } from "./reducers/notificationReducer";
-import { createBlog, initBlogs } from "./reducers/blogReducer";
+import { createBlog, initBlogs, voteBlog } from "./reducers/blogReducer";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -111,7 +111,7 @@ const App = () => {
       // this most likely would not be an issue if using a faster, production connection to mongodb?
 
       dispatch(resetNotification());
-      await blogService.patch(blog.id, blog.likes + 1);
+      dispatch(voteBlog(blog.id, blog.likes));
       dispatch(
         setNotification(
           `"${blog.title}" has been updated to ${blog.likes + 1} likes`
