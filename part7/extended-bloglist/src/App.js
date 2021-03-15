@@ -29,6 +29,7 @@ import {
   voteBlog,
   removeBlog
 } from "./reducers/blogReducer";
+import { setUser, resetUser } from "./reducers/loginReducer";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -36,13 +37,12 @@ import { useDispatch, useSelector } from "react-redux";
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
-
   // const [visible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification);
   const blogs = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.user);
 
   // rerender blog list whenever the URL field changes, i.e. when the field is reset on submit
   useEffect(() => {
@@ -53,10 +53,11 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      dispatch(setUser(user));
+
       blogService.setToken(user.token);
     }
-  }, []);
+  }, [dispatch]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -69,8 +70,7 @@ const App = () => {
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
 
       blogService.setToken(user.token);
-      setUser(user);
-
+      dispatch(setUser(user));
       dispatch(setNotification("Logged in"));
 
       setUsername("");
@@ -83,7 +83,9 @@ const App = () => {
   const handleLogout = async (event) => {
     event.preventDefault();
     window.localStorage.removeItem("loggedBlogAppUser");
-    setUser(null);
+    dispatch(resetUser());
+    dispatch(setNotification("Logged out"));
+
     setUsername("");
     setPassword("");
   };
