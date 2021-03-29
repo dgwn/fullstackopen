@@ -1,5 +1,6 @@
 // Core
 import React, { useState, useEffect, useRef } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 
 // Components
@@ -9,6 +10,7 @@ import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 // import BlogTable from "./components/BlogTable";
 import Togglable from "./components/Togglable";
+import Users from "./components/Users";
 
 // Services
 import blogService from "./services/blogs";
@@ -33,6 +35,7 @@ import { setUser, resetUser } from "./reducers/loginReducer";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
+import { initUsers } from "./reducers/usersReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -43,10 +46,12 @@ const App = () => {
   const notification = useSelector((state) => state.notification);
   const blogs = useSelector((state) => state.blogs);
   const user = useSelector((state) => state.user);
+  const users = useSelector((state) => state.users);
 
   // rerender blog list whenever the URL field changes, i.e. when the field is reset on submit
   useEffect(() => {
     dispatch(initBlogs());
+    dispatch(initUsers());
   }, [notification, dispatch]);
 
   useEffect(() => {
@@ -229,7 +234,15 @@ const App = () => {
         )}
       </Grid>
       <Grid item xs={8}>
-        {user !== null && blogList()}
+        <Router>
+          <Switch>
+            <Route path="/users">
+              <Users users={users} />
+            </Route>
+            <Route path="/">{user !== null && blogList()}</Route>
+          </Switch>
+        </Router>
+
         {/* {user !== null && <BlogTable blogs={blogs} />} */}
       </Grid>
     </Grid>
