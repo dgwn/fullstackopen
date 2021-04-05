@@ -11,6 +11,7 @@ import BlogForm from "./components/BlogForm";
 // import BlogTable from "./components/BlogTable";
 import Togglable from "./components/Togglable";
 import Users from "./components/Users";
+import User from "./components/User";
 
 // Services
 import blogService from "./services/blogs";
@@ -236,6 +237,9 @@ const App = () => {
       <Grid item xs={8}>
         <Router>
           <Switch>
+            <Route path="/users/:id">
+              <User users={users} />
+            </Route>
             <Route path="/users">
               <Users users={users} />
             </Route>

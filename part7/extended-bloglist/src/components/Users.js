@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -25,11 +26,10 @@ const Users = (users) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* {console.log(users.users)} */}
             {users.users.map((user) => (
               <TableRow key={user.name}>
                 <TableCell component="th" scope="row">
-                  {user.name}
+                  <Link to={`/users/${user.id}`}>{user.name}</Link>
                 </TableCell>
                 <TableCell align="right">{user.blogs.length}</TableCell>
               </TableRow>
