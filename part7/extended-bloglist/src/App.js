@@ -1,6 +1,6 @@
 // Core
 import React, { useState, useEffect, useRef } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 
 // Components
@@ -12,6 +12,7 @@ import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
 import Users from "./components/Users";
 import User from "./components/User";
+import BlogDetails from "./components/BlogDetails";
 
 // Services
 import blogService from "./services/blogs";
@@ -167,8 +168,9 @@ const App = () => {
               width: "20rem"
             }}
           >
-            <Blog key={blog.id} blog={blog} />
-            <Togglable buttonLabel="View">
+            {/* <Blog key={blog.id} blog={blog} /> */}
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            {/* <Togglable buttonLabel="View">
               {blog.url}
               <br />
               <div style={{ display: "flex" }}>
@@ -184,10 +186,10 @@ const App = () => {
                 Like
               </Button>
               <br />
-              {/* blog.user.name must be expressed after result of a conditional, otherwise  blog details try to render before post request goes through*/}
+              blog.user.name must be expressed after result of a conditional, otherwise  blog details try to render before post request goes through
               {blog.user !== undefined && blog.user.name}
               <br />
-              {/*  same as above */}
+              {/*  same as above 
               {blog.user !== undefined && blog.user.name === user.name && (
                 <Button
                   variant="contained"
@@ -204,7 +206,7 @@ const App = () => {
                 </Button>
               )}
               <br />
-            </Togglable>
+            </Togglable> */}
           </div>
         ))}
     </div>
@@ -242,6 +244,9 @@ const App = () => {
             </Route>
             <Route path="/users">
               <Users users={users} />
+            </Route>
+            <Route path="/blogs/:id">
+              <BlogDetails blogs={blogs} updateLikes={updateLikes} />
             </Route>
             <Route path="/">{user !== null && blogList()}</Route>
           </Switch>
