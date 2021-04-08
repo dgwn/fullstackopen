@@ -13,6 +13,7 @@ import Togglable from "./components/Togglable";
 import Users from "./components/Users";
 import User from "./components/User";
 import BlogDetails from "./components/BlogDetails";
+import Nav from "./components/Nav";
 
 // Services
 import blogService from "./services/blogs";
@@ -216,28 +217,32 @@ const App = () => {
 
   return (
     <Grid container>
-      <Grid item xs={4} style={{ textAlign: "center", padding: 20 }}>
-        <h2>Blogs</h2>
-        {notification !== null && <Notification notification={notification} />}
+      <Router>
+        <Grid item xs={4} style={{ textAlign: "center", padding: 20 }}>
+          <Nav />
+          <h2>Blogs</h2>
+          {notification !== null && (
+            <Notification notification={notification} />
+          )}
 
-        {user === null && (
-          <Login
-            handleLogin={handleLogin}
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-          />
-        )}
-        {user !== null && welcomeUser()}
-        {user !== null && (
-          <Togglable buttonLabel="Post Blog" ref={blogFormRef}>
-            <BlogForm createBlog={addBlog} />
-          </Togglable>
-        )}
-      </Grid>
-      <Grid item xs={8}>
-        <Router>
+          {user === null && (
+            <Login
+              handleLogin={handleLogin}
+              username={username}
+              setUsername={setUsername}
+              password={password}
+              setPassword={setPassword}
+            />
+          )}
+          {user !== null && welcomeUser()}
+          {user !== null && (
+            <Togglable buttonLabel="Post Blog" ref={blogFormRef}>
+              <BlogForm createBlog={addBlog} />
+            </Togglable>
+          )}
+        </Grid>
+        <Grid item xs={8}>
+          {/* <Router> */}
           <Switch>
             <Route path="/users/:id">
               <User users={users} />
@@ -250,10 +255,11 @@ const App = () => {
             </Route>
             <Route path="/">{user !== null && blogList()}</Route>
           </Switch>
-        </Router>
+          {/* </Router> */}
 
-        {/* {user !== null && <BlogTable blogs={blogs} />} */}
-      </Grid>
+          {/* {user !== null && <BlogTable blogs={blogs} />} */}
+        </Grid>
+      </Router>
     </Grid>
   );
 };
