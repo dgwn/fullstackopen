@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 const BlogDetails = (blogs) => {
   const id = useParams().id;
   const blog = blogs.blogs.find((n) => n.id === id);
+  const getId = () => (100000 * Math.random()).toFixed(0);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -72,6 +73,12 @@ const BlogDetails = (blogs) => {
         Delete
       </Button>
       <p>added by {blog.user.name}</p>
+      <h3>Comments:</h3>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li id={getId()}>{comment}</li>
+        ))}
+      </ul>
     </div>
   );
 };
