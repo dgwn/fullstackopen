@@ -22,7 +22,7 @@ export const setNotification = (content) => {
     clearTimeout(notificationTimeout);
     notificationTimeout = setTimeout(() => {
       dispatch(resetNotification());
-    }, 7000);
+    }, 2000);
   };
 };
 
