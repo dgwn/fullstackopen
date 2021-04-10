@@ -11,7 +11,7 @@ const userReducer = (state = [], action) => {
 
 export const initUsers = (users) => {
   return async (dispatch) => {
-    const users = await axios.get("api/users");
+    const users = await axios.get("/api/users");
     dispatch({
       type: "INIT_USERS",
       data: users
