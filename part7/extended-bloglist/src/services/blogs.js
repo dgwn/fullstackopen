@@ -28,6 +28,18 @@ const patch = async (blogToUpdate, likes) => {
   return response.data;
 };
 
+const commentPost = async (blogToUpdate, comments) => {
+  const newComments = {
+    comments: comments
+  };
+
+  const response = await axios.post(
+    baseUrl + "/" + blogToUpdate + "/comments",
+    newComments
+  );
+  return response.data;
+};
+
 const remove = async (blogToDelete) => {
   const config = {
     headers: { Authorization: token }
@@ -36,4 +48,6 @@ const remove = async (blogToDelete) => {
   return response.data;
 };
 
-export default { getAll, create, patch, remove, setToken };
+const blogService = { getAll, create, patch, commentPost, remove, setToken };
+
+export default blogService;

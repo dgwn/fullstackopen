@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setNotification,
   resetNotification
 } from ".././reducers/notificationReducer";
-import { voteBlog, removeBlog } from ".././reducers/blogReducer";
+import { voteBlog, removeBlog, commentBlog } from ".././reducers/blogReducer";
+import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 const BlogDetails = (blogs) => {
@@ -15,6 +16,8 @@ const BlogDetails = (blogs) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const [newComment, setNewComment] = useState("");
 
   const updateLikes = async (blog) => {
     try {
@@ -31,6 +34,19 @@ const BlogDetails = (blogs) => {
       );
     } catch (exception) {
       dispatch(setNotification("Error updating blog"));
+    }
+  };
+
+  const postComment = async (event) => {
+    try {
+      event.preventDefault();
+      dispatch(resetNotification());
+      dispatch(setNotification("comment has been added"));
+      dispatch(commentBlog(blog.id, blog.comments, newComment));
+
+      setNewComment("");
+    } catch (exception) {
+      dispatch(setNotification("Error adding comment"));
     }
   };
 
@@ -76,9 +92,30 @@ const BlogDetails = (blogs) => {
       <h3>Comments:</h3>
       <ul>
         {blog.comments.map((comment) => (
-          <li id={getId()}>{comment}</li>
+          <li key={getId()}>{comment}</li>
         ))}
       </ul>
+      <form onSubmit={postComment} id="blogForm">
+        <div>
+          <TextField
+            value={newComment}
+            onChange={({ target }) => setNewComment(target.value)}
+            label="Comment"
+            id="commentInput"
+          />
+        </div>
+
+        <Button
+          variant="outlined"
+          color="primary"
+          type="submit"
+          style={{ marginTop: 10 }}
+        >
+          Submit
+        </Button>
+        <br />
+        <br />
+      </form>
     </div>
   );
 };
