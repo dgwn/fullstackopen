@@ -152,8 +152,6 @@ blogsRouter.patch("/:id", async (request, response, next) => {
 blogsRouter.post("/:id/comments", async (request, response) => {
   try {
     const body = await request.body;
-    console.log(body);
-
     const updatedBlog = await Blog.findByIdAndUpdate(
       request.params.id,
       {

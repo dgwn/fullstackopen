@@ -5,7 +5,7 @@ import "./App.css";
 
 // Components
 import Login from "./components/Login";
-import Blog from "./components/Blog";
+// import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 // import BlogTable from "./components/BlogTable";
@@ -28,12 +28,7 @@ import {
   setNotification,
   resetNotification
 } from "./reducers/notificationReducer";
-import {
-  createBlog,
-  initBlogs,
-  voteBlog,
-  removeBlog
-} from "./reducers/blogReducer";
+import { createBlog, initBlogs, voteBlog } from "./reducers/blogReducer";
 import { setUser, resetUser } from "./reducers/loginReducer";
 
 // Redux
@@ -110,15 +105,15 @@ const App = () => {
     }
   };
 
-  const deleteBlog = async (blog) => {
-    try {
-      // await blogService.remove(blog.id);
-      dispatch(removeBlog(blog.id));
-      dispatch(setNotification(`"${blog.title}" has been deleted`));
-    } catch (exception) {
-      dispatch(setNotification("Error deleting blog"));
-    }
-  };
+  // const deleteBlog = async (blog) => {
+  //   try {
+  //     // await blogService.remove(blog.id);
+  //     dispatch(removeBlog(blog.id));
+  //     dispatch(setNotification(`"${blog.title}" has been deleted`));
+  //   } catch (exception) {
+  //     dispatch(setNotification("Error deleting blog"));
+  //   }
+  // };
 
   const updateLikes = async (blog) => {
     try {
