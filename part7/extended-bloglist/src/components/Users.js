@@ -1,19 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+// import Table from "@material-ui/core/Table";
+// import TableBody from "@material-ui/core/TableBody";
+// import TableCell from "@material-ui/core/TableCell";
+// import TableContainer from "@material-ui/core/TableContainer";
+// import TableHead from "@material-ui/core/TableHead";
+// import TableRow from "@material-ui/core/TableRow";
+// import Paper from "@material-ui/core/Paper";
+
+import { DataTable, Text, Box, Meter } from "grommet";
 
 const Users = (users) => {
+  const data = users.users.map((user) => ({
+    name: user.name,
+    id: user.id,
+    blogs: user.blogs.length
+  }));
+
   return (
     <div>
-      <h1>Users</h1>
-      <TableContainer component={Paper}>
+      {/* <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead style={{ backgroundColor: "#3f51b5" }}>
             <TableRow>
@@ -36,7 +43,23 @@ const Users = (users) => {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
+
+      <DataTable
+        columns={[
+          {
+            property: "name",
+            header: <Text>User</Text>,
+            primary: true,
+            render: (user) => <Link to={`/users/${user.id}`}>{user.name}</Link>
+          },
+          {
+            property: "blogs",
+            header: "Number of Blogs"
+          }
+        ]}
+        data={data}
+      />
     </div>
   );
 };

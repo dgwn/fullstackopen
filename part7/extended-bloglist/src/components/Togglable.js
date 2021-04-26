@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle } from "react";
-import Button from "@material-ui/core/Button";
+import { Box, Button } from "grommet";
 import PropTypes from "prop-types";
 
 const Togglable = React.forwardRef((props, ref) => {
@@ -19,30 +19,20 @@ const Togglable = React.forwardRef((props, ref) => {
   });
 
   return (
-    <div>
+    <Box align="center" justify="center">
       <div style={hideWhenVisible}>
         <Button
-          variant="contained"
+          secondary
           onClick={toggleVisibility}
-          color="default"
-          type="submit"
-          style={{ marginTop: 10 }}
-        >
-          {props.buttonLabel}
-        </Button>
+          margin={{ top: "small" }}
+          label={props.buttonLabel}
+        />
       </div>
       <div style={showWhenVisible} className="togglableContent">
         {props.children}
-        <Button
-          variant="contained"
-          onClick={toggleVisibility}
-          color="default"
-          style={{ marginTop: 10 }}
-        >
-          Cancel
-        </Button>
+        <Button secondary onClick={toggleVisibility} label="Cancel" />
       </div>
-    </div>
+    </Box>
   );
 });
 

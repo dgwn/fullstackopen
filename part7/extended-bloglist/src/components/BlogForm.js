@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
+import { Button } from "grommet";
 import TextField from "@material-ui/core/TextField";
 
 const BlogForm = ({ createBlog }) => {
@@ -49,14 +49,8 @@ const BlogForm = ({ createBlog }) => {
         />
       </div>
 
-      <Button
-        variant="outlined"
-        color="primary"
-        type="submit"
-        style={{ marginTop: 10 }}
-      >
-        Submit
-      </Button>
+      <Button primary type="submit" margin={{ top: "small" }} label="Submit" />
+
       <br />
       <br />
     </form>

@@ -19,9 +19,13 @@ import Nav from "./components/Nav";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
+// Grommet
+import { Grommet, Box, Button, Grid, ResponsiveContext } from "grommet";
+import { deepMerge } from "grommet/utils";
+
 // Material-UI
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+// import Grid from "@material-ui/core/Grid";
+// import Button from "@material-ui/core/Button";
 
 // Reducers
 import {
@@ -34,6 +38,15 @@ import { setUser, resetUser } from "./reducers/loginReducer";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { initUsers } from "./reducers/usersReducer";
+
+const ResponsiveGrid = ({ children, areas, ...props }) => {
+  const size = React.useContext(ResponsiveContext);
+  return (
+    <Grid areas={areas[size]} {...props}>
+      {children}
+    </Grid>
+  );
+};
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -61,6 +74,22 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, [dispatch]);
+
+  const theme = deepMerge({
+    global: {
+      font: {
+        family: "Roboto",
+        size: "18px",
+        height: "20px"
+      },
+      breakpoints: {
+        small: {
+          value: 900
+        },
+        desktop: { value: 1500 }
+      }
+    }
+  });
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -134,20 +163,17 @@ const App = () => {
   };
 
   const welcomeUser = () => (
-    <div>
-      Welcome {user.name}
-      <form onSubmit={handleLogout}>
+    <Box align="center">
+      <div>Welcome {user.name}</div>
+      <div>
         <Button
-          variant="outlined"
-          color="secondary"
-          type="submit"
-          style={{ marginTop: 10 }}
-        >
-          Logout
-        </Button>
-      </form>
-      <br />
-    </div>
+          primary
+          onClick={handleLogout}
+          color="status-critical"
+          label="Logout"
+        />
+      </div>
+    </Box>
   );
 
   const blogList = () => (
@@ -211,51 +237,76 @@ const App = () => {
   const blogFormRef = useRef();
 
   return (
-    <Grid container>
-      <Router>
-        <Grid item xs={4} style={{ textAlign: "center", padding: 20 }}>
-          <Nav />
-          <h2>Blogs</h2>
-          {notification !== null && (
-            <Notification notification={notification} />
-          )}
+    <Grommet theme={theme}>
+      <ResponsiveContext.Consumer>
+        {(size) => (
+          <ResponsiveGrid
+            responsive={true}
+            rows={["xsmall", "auto", "auto"]}
+            columns={["auto", "auto"]}
+            gap="small"
+            areas={{
+              small: [
+                { name: "nav", start: [0, 0], end: [1, 0] },
+                { name: "login", start: [0, 1], end: [1, 1] },
+                { name: "blogs", start: [0, 2], end: [1, 2] }
+              ],
+              desktop: [
+                { name: "nav", start: [0, 0], end: [1, 0] },
+                { name: "login", start: [0, 1], end: [0, 1] },
+                { name: "blogs", start: [1, 1], end: [1, 1] }
+              ]
+            }}
+          >
+            <Router>
+              <Box gridArea="nav">
+                <Nav />
+                {notification !== null && (
+                  <Notification notification={notification} />
+                )}
+              </Box>
+              <Box gridArea="login" align="center">
+                <h2>Blogs</h2>
 
-          {user === null && (
-            <Login
-              handleLogin={handleLogin}
-              username={username}
-              setUsername={setUsername}
-              password={password}
-              setPassword={setPassword}
-            />
-          )}
-          {user !== null && welcomeUser()}
-          {user !== null && (
-            <Togglable buttonLabel="Post Blog" ref={blogFormRef}>
-              <BlogForm createBlog={addBlog} />
-            </Togglable>
-          )}
-        </Grid>
-        <Grid item xs={8}>
-          {/* <Router> */}
-          <Switch>
-            <Route path="/users/:id">
-              <User users={users} />
-            </Route>
-            <Route path="/users">
-              <Users users={users} />
-            </Route>
-            <Route path="/blogs/:id">
-              <BlogDetails blogs={blogs} updateLikes={updateLikes} />
-            </Route>
-            <Route path="/">{user !== null && blogList()}</Route>
-          </Switch>
-          {/* </Router> */}
+                {user === null && (
+                  <Login
+                    handleLogin={handleLogin}
+                    username={username}
+                    setUsername={setUsername}
+                    password={password}
+                    setPassword={setPassword}
+                  />
+                )}
+                {user !== null && welcomeUser()}
+                {user !== null && (
+                  <Togglable buttonLabel="Post Blog" ref={blogFormRef}>
+                    <BlogForm createBlog={addBlog} />
+                  </Togglable>
+                )}
+              </Box>
+              <Box gridArea="blogs" align="center" alignContent="center">
+                {/* <Router> */}
+                <Switch>
+                  <Route path="/users/:id">
+                    <User users={users} />
+                  </Route>
+                  <Route path="/users">
+                    <Users users={users} />
+                  </Route>
+                  <Route path="/blogs/:id">
+                    <BlogDetails blogs={blogs} updateLikes={updateLikes} />
+                  </Route>
+                  <Route path="/">{blogList()}</Route>
+                </Switch>
+                {/* </Router> */}
 
-          {/* {user !== null && <BlogTable blogs={blogs} />} */}
-        </Grid>
-      </Router>
-    </Grid>
+                {/* {user !== null && <BlogTable blogs={blogs} />} */}
+              </Box>
+            </Router>
+          </ResponsiveGrid>
+        )}
+      </ResponsiveContext.Consumer>
+    </Grommet>
   );
 };
 

@@ -7,7 +7,10 @@ import {
 } from ".././reducers/notificationReducer";
 import { voteBlog, removeBlog, commentBlog } from ".././reducers/blogReducer";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
+
+import { Box, Button, Card, CardHeader, CardBody, CardFooter } from "grommet";
+import { Favorite, Trash } from "grommet-icons";
 
 const BlogDetails = (blogs) => {
   const id = useParams().id;
@@ -63,7 +66,7 @@ const BlogDetails = (blogs) => {
 
   return (
     <div className="blog">
-      <h2>
+      {/* <h2>
         &quot;{blog.title}&quot; - {blog.author}
       </h2>
       <p>{blog.url}</p>
@@ -115,7 +118,67 @@ const BlogDetails = (blogs) => {
         </Button>
         <br />
         <br />
-      </form>
+      </form> */}
+      <Card height="auto" width="medium" background="light-3" margin="10px">
+        <CardHeader pad="medium">
+          <h2>
+            &quot;{blog.title}&quot; - {blog.author}
+          </h2>
+        </CardHeader>
+        <CardBody pad="medium" gap="none" background="light-1">
+          <p>{blog.url}</p>
+          <p>added by {blog.user.name}</p>
+          <h3>Comments:</h3>
+          <ul>
+            {blog.comments.map((comment) => (
+              <li key={getId()}>{comment}</li>
+            ))}
+          </ul>
+          <form onSubmit={postComment} id="blogForm">
+            <Box direction="row" justify="around">
+              <div>
+                <TextField
+                  value={newComment}
+                  onChange={({ target }) => setNewComment(target.value)}
+                  label="Comment"
+                  id="commentInput"
+                />
+              </div>
+
+              <Button
+                primary
+                type="submit"
+                margin={{ top: "small" }}
+                label="Submit"
+              />
+              <br />
+              <br />
+            </Box>
+          </form>
+        </CardBody>
+        <CardFooter pad={{ horizontal: "medium" }} background="light-2">
+          <Button
+            icon={<Favorite color="red" onClick={() => updateLikes(blog)} />}
+            hoverIndicator
+          />
+          <p>{blog.likes} Likes</p>
+          <Button
+            icon={
+              <Trash
+                color="plain"
+                onClick={() => {
+                  if (
+                    window.confirm("Do you really want to remove this blog?")
+                  ) {
+                    deleteBlog(blog);
+                  }
+                }}
+              />
+            }
+            hoverIndicator
+          />
+        </CardFooter>
+      </Card>
     </div>
   );
 };
