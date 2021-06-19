@@ -5,6 +5,7 @@ import "./App.css";
 
 // Components
 import Login from "./components/Login";
+import NewUser from "./components/NewUser";
 // import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
@@ -51,10 +52,13 @@ const ResponsiveGrid = ({ children, areas, ...props }) => {
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [newUserVisible, setNewUserVisible] = useState(false);
   // const [visible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification);
+
   const blogs = useSelector((state) => state.blogs);
   const user = useSelector((state) => state.user);
   const users = useSelector((state) => state.users);
@@ -110,6 +114,31 @@ const App = () => {
     } catch (exception) {
       dispatch(setNotification("Wrong credentials"));
     }
+  };
+
+  const handleCreateUser = async () => {
+    try {
+      console.log(name);
+
+      await loginService.newUser({
+        username,
+        name,
+        password
+      });
+
+      dispatch(setNotification("New user created"));
+
+      setUsername("");
+      setPassword("");
+      setName("");
+    } catch (exception) {
+      dispatch(setNotification("Error"));
+    }
+  };
+
+  const userHandler = (event) => {
+    event.preventDefault();
+    setNewUserVisible(true);
   };
 
   const handleLogout = async (event) => {
@@ -269,13 +298,33 @@ const App = () => {
                 <h2>Blogs</h2>
 
                 {user === null && (
-                  <Login
-                    handleLogin={handleLogin}
-                    username={username}
-                    setUsername={setUsername}
-                    password={password}
-                    setPassword={setPassword}
-                  />
+                  <>
+                    <Login
+                      handleLogin={handleLogin}
+                      username={username}
+                      setUsername={setUsername}
+                      password={password}
+                      setPassword={setPassword}
+                    />
+                    {newUserVisible === true && (
+                      <NewUser
+                        newUserVisible={newUserVisible}
+                        setNewUserVisible={setNewUserVisible}
+                        handleCreateUser={handleCreateUser}
+                        username={username}
+                        setUsername={setUsername}
+                        password={password}
+                        setPassword={setPassword}
+                        setName={setName}
+                        name={name}
+                      />
+                    )}
+                    <Button
+                      variant="outlined"
+                      onClick={userHandler}
+                      label="Sign Me Up!"
+                    ></Button>
+                  </>
                 )}
                 {user !== null && welcomeUser()}
                 {user !== null && (

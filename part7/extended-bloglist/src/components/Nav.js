@@ -16,7 +16,7 @@ const Nav = () => {
     <div
       style={{
         width: "100%",
-        height: "100%",
+        height: "auto",
         display: "flex",
         justifyContent: "space-evenly",
         backgroundColor: "#e6f2fd",
