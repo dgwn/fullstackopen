@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const Persons = ( {displayNames} ) => {
-  return (
-    <ul>
-      {displayNames()}
-    </ul>
-  )
-}
+const Persons = ({ displayNames }) => {
+  return <ul className="list-group">{displayNames()}</ul>;
+};
 
-export default Persons
+export default Persons;

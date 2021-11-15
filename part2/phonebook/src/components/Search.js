@@ -1,17 +1,22 @@
-import React from 'react'
+import React from "react";
 
-const Search = ( {newSearch, setNewSearch} ) => {
+const Search = ({ newSearch, setNewSearch }) => {
   const handleSearch = (event) => {
-    setNewSearch(event.target.value)
-  }
+    setNewSearch(event.target.value);
+  };
 
   return (
-    <form>
+    <form className="mb-3">
       <div>
-        Search: <input value={newSearch} onChange={handleSearch}/>
+        Search:{" "}
+        <input
+          value={newSearch}
+          onChange={handleSearch}
+          className="form-control w-50"
+        />
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;

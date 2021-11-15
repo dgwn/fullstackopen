@@ -1,27 +1,38 @@
-import React from 'react'
+import React from "react";
 
-const Form = ( {newName, setNewName, newNumber, setNewNumber, addName}) => {
-
+const Form = ({ newName, setNewName, newNumber, setNewNumber, addName }) => {
   const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  }
+    setNewName(event.target.value);
+  };
 
   const handleNumberChange = (event) => {
-    setNewNumber(event.target.value)
-  }
+    setNewNumber(event.target.value);
+  };
 
   return (
-    <form>
+    <form className="mb-3 w-50">
       <div>
-        name: <input value={newName} onChange={handleNameChange}/>
+        <label className="form-label">Name:</label>
+        <input
+          value={newName}
+          onChange={handleNameChange}
+          className="form-control"
+        />
       </div>
       <div>
-        number: <input value={newNumber} onChange={handleNumberChange}/>
-      <div/>
-        <button type="submit" onClick={addName}>add</button>
+        <label className="form-label">Number:</label>
+        <input
+          value={newNumber}
+          onChange={handleNumberChange}
+          className="form-control"
+        />
+        <div />
+        <button type="submit" class="btn btn-primary mt-2" onClick={addName}>
+          add
+        </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default Form
+export default Form;
