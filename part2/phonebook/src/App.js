@@ -114,7 +114,7 @@ const App = () => {
   const displayNames = () => {
     if (newSearch === "") {
       return persons.map((person) => (
-        <li key={person.id} className="list-group-item">
+        <li key={person.id} className="list-group-item w-50">
           {person.name}: {person.number}{" "}
           <button
             onClick={() => deleteName(person.id)}
@@ -134,8 +134,14 @@ const App = () => {
         return persons
           .filter((person) => person.name.toLowerCase().includes(newSearch))
           .map((person) => (
-            <li key={person.id} className="list-group-item">
+            <li key={person.id} className="list-group-item w-50">
               {person.name}: {person.number}
+              <button
+                onClick={() => deleteName(person.id)}
+                className="btn btn-danger btn-sm"
+              >
+                Delete
+              </button>
             </li>
           ));
       }
