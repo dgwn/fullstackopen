@@ -114,11 +114,11 @@ const App = () => {
   const displayNames = () => {
     if (newSearch === "") {
       return persons.map((person) => (
-        <li key={person.id} className="list-group-item w-50">
+        <li key={person.id} className="list-group-item w-50 clearfix">
           {person.name}: {person.number}{" "}
           <button
             onClick={() => deleteName(person.id)}
-            className="btn btn-danger btn-sm"
+            className="btn btn-danger btn-sm float-end"
           >
             Delete
           </button>
@@ -134,11 +134,11 @@ const App = () => {
         return persons
           .filter((person) => person.name.toLowerCase().includes(newSearch))
           .map((person) => (
-            <li key={person.id} className="list-group-item w-50">
+            <li key={person.id} className="list-group-item w-50 clearfix">
               {person.name}: {person.number}
               <button
                 onClick={() => deleteName(person.id)}
-                className="btn btn-danger btn-sm"
+                className="btn btn-danger btn-sm float-end"
               >
                 Delete
               </button>
@@ -146,7 +146,9 @@ const App = () => {
           ));
       }
     }
-    return <li className="list-group-item">No such name in the phonebook</li>;
+    return (
+      <li className="list-group-item w-50">No such name in the phonebook</li>
+    );
   };
 
   return (
