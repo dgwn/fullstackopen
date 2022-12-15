@@ -56,11 +56,15 @@ const BlogDetails = (blogs) => {
   const deleteBlog = async (blog) => {
     try {
       // await blogService.remove(blog.id);
-      dispatch(removeBlog(blog.id));
+      await dispatch(removeBlog(blog.id));
       dispatch(setNotification(`"${blog.title}" has been deleted`));
       history.push("/");
     } catch (exception) {
-      dispatch(setNotification("Error deleting blog"));
+      dispatch(
+        setNotification(
+          "Error deleting blog. You must be logged in as the blog's creator"
+        )
+      );
     }
   };
 
