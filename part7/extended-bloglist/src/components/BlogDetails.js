@@ -57,8 +57,8 @@ const BlogDetails = (blogs) => {
     try {
       // await blogService.remove(blog.id);
       await dispatch(removeBlog(blog.id));
-      dispatch(setNotification(`"${blog.title}" has been deleted`));
       history.push("/");
+      dispatch(setNotification(`The blog has been deleted`));
     } catch (exception) {
       dispatch(
         setNotification(
@@ -123,66 +123,68 @@ const BlogDetails = (blogs) => {
         <br />
         <br />
       </form> */}
-      <Card height="auto" width="medium" background="light-3" margin="10px">
-        <CardHeader pad="medium">
-          <h2>
-            &quot;{blog.title}&quot; - {blog.author}
-          </h2>
-        </CardHeader>
-        <CardBody pad="medium" gap="none" background="light-1">
-          <p>{blog.url}</p>
-          <p>added by {blog.user.name}</p>
-          <h3>Comments:</h3>
-          <ul>
-            {blog.comments.map((comment) => (
-              <li key={getId()}>{comment}</li>
-            ))}
-          </ul>
-          <form onSubmit={postComment} id="blogForm">
-            <Box direction="row" justify="around">
-              <div>
-                <TextField
-                  value={newComment}
-                  onChange={({ target }) => setNewComment(target.value)}
-                  label="Comment"
-                  id="commentInput"
-                />
-              </div>
+      {blog && (
+        <Card height="auto" width="medium" background="light-3" margin="10px">
+          <CardHeader pad="medium">
+            <h2>
+              &quot;{blog.title}&quot; - {blog.author}
+            </h2>
+          </CardHeader>
+          <CardBody pad="medium" gap="none" background="light-1">
+            <p>{blog.url}</p>
+            <p>added by {blog.user.name}</p>
+            <h3>Comments:</h3>
+            <ul>
+              {blog.comments.map((comment) => (
+                <li key={getId()}>{comment}</li>
+              ))}
+            </ul>
+            <form onSubmit={postComment} id="blogForm">
+              <Box direction="row" justify="around">
+                <div>
+                  <TextField
+                    value={newComment}
+                    onChange={({ target }) => setNewComment(target.value)}
+                    label="Comment"
+                    id="commentInput"
+                  />
+                </div>
 
-              <Button
-                primary
-                type="submit"
-                margin={{ top: "small" }}
-                label="Submit"
-              />
-              <br />
-              <br />
-            </Box>
-          </form>
-        </CardBody>
-        <CardFooter pad={{ horizontal: "medium" }} background="light-2">
-          <Button
-            icon={<Favorite color="red" onClick={() => updateLikes(blog)} />}
-            hoverIndicator
-          />
-          <p>{blog.likes} Likes</p>
-          <Button
-            icon={
-              <Trash
-                color="plain"
-                onClick={() => {
-                  if (
-                    window.confirm("Do you really want to remove this blog?")
-                  ) {
-                    deleteBlog(blog);
-                  }
-                }}
-              />
-            }
-            hoverIndicator
-          />
-        </CardFooter>
-      </Card>
+                <Button
+                  primary
+                  type="submit"
+                  margin={{ top: "small" }}
+                  label="Submit"
+                />
+                <br />
+                <br />
+              </Box>
+            </form>
+          </CardBody>
+          <CardFooter pad={{ horizontal: "medium" }} background="light-2">
+            <Button
+              icon={<Favorite color="red" onClick={() => updateLikes(blog)} />}
+              hoverIndicator
+            />
+            <p>{blog.likes} Likes</p>
+            <Button
+              icon={
+                <Trash
+                  color="plain"
+                  onClick={() => {
+                    if (
+                      window.confirm("Do you really want to remove this blog?")
+                    ) {
+                      deleteBlog(blog);
+                    }
+                  }}
+                />
+              }
+              hoverIndicator
+            />
+          </CardFooter>
+        </Card>
+      )}
     </div>
   );
 };
