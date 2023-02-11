@@ -23,7 +23,7 @@
   "homepage": "https://github.com/dgwn/fullstackopen#readme",
   "devDependencies": {
     "eslint": "^8.2.0",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.20"
   },
   "dependencies": {
     "cors": "^2.8.5",
